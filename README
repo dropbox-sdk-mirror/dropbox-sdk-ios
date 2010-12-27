@@ -1,0 +1,118 @@
+Getting Started Using the DropboxSDK for iOS:
+
+Requirements:
+1. You need the 4.0 version of the iPhone SDK. The version of your XCode should
+   be at least 3.2.3.
+2. You need to have registered as a Dropbox application with mobile access at 
+   http://dropbox.com/developers. You should have a consumer key and secret.
+
+Step 1: Building and using the example app
+1. Open the project file in examples/DBRoulette/DBRoulette.xcodeproj
+2. Fill in the values for consumerKey and consumerSecret in 
+   DBRouletteAppDelegate.m application:didFinishLaunchingWithOptions:
+3. Make sure the build is set to Simulator. This setting should be near
+   the top-left corner of XCode.
+4. Build and Run app
+5. Once running, make sure you can use the app to login and view photos in your
+   Photos Dropbox folder without getting errors.
+
+If you cannot run the app without getting errors, make sure your consumer key
+and consumer token are correct. Also make sure that your app has been
+approved by Dropbox for mobile access.
+
+
+Step 2: Adding DropboxSDK to your project
+1. Open your project in XCode
+2. Right-click on your project in the group tree in the left pane
+3. Select Add -> Existing Files...
+4. Navigate to where you uncompressed the Dropbox SDK and select the DropboxSDK
+   subfolder
+5. Select "Copy items into destination group's folder"
+6. Make sure "Recursively create groups for any added folders" is selected
+7. Press Add button
+8. Find the Frameworks folder in your app's group tree in the left pane
+9. Make sure the framework Security.framework is added to your project
+10. If not, right-click on Frameworks and select Add -> Existing Frameworks...
+11. Select Security.framework from the list and select Add
+12. Build your application. At this point you should have no build failures or
+    warnings
+
+
+Step 3: Login successfully in your app
+1. In your application delegate's application:didFinishLaunchingWithOptions:
+   method, add the following code:
+
+    DBSession* dbSession = 
+        [[[DBSession alloc]
+          initWithConsumerKey:@"<YOUR CONSUMER KEY>"
+          consumerSecret:@"<YOUR CONSUMER SECRET>"]
+         autorelease];
+    [DBSession setSharedSession:dbSession];
+
+   Note: you will need to #import "DropboxSDK.h" at the top of this file
+
+2. Somewhere in your app, add an event to launch the login controller, which
+   should look something like this:
+
+   - (void)didPressLink {
+       DBLoginController* controller = [[DBLoginController new] autorelease];
+       [controller presentFromController:self];
+   }
+
+   Note: you will need to #import "DropboxSDK.h" at the top of this file
+
+3. Build and run your app
+4. Find your link button in your app and press it
+5. Go through the login flow. If you are able to login successfully without any
+   errors you have successfully added the SDK to your project.
+
+Step 4: Using DBRestClient
+The DBRestClient is the way to make API calls from your application once the
+user has logged in. For a real example of how to use this object look at 
+PhotoViewController.m in examples/DBRoulette/Classes. In general, to make api 
+calls from an object you will do the following:
+1. Add a DBRestClient* instance variable in your object's .h file:
+   
+   DBRestClient* restClient;
+
+   Note: you will need to #import "DropboxSDK.h" at the top of this file
+
+2. Create a getter method to allocate and initialize the restClient:
+
+   - (DBRestClient*)restClient {
+      if (!restClient) {
+         restClient = 
+            [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+         restClient.delegate = self;
+      }
+      return restClient;
+   }
+
+3. Make an request on the rest client:
+
+   [[self restClient] loadMetadata:@"/"];
+
+3. Implement the DBRestClientDelegate methods needed to get the results of the
+   particular call you made:
+
+   - (void)restClient:(DBRestClient*)client 
+       loadedMetadata:(DBMetadata*)metadata {
+
+       NSLog(@"Loaded metadata!");
+   }
+
+   - (void)restClient:(DBRestClient*)client 
+       metadataUnchangedAtPath:(NSString*)path {
+
+       NSLog(@"Metadata unchanged!");
+   }
+
+   - (void)restClient:(DBRestClient*)client 
+       loadMetadataFailedWithError:(NSError*)error {
+
+       NSLog(@"Error loading metadata: %@", error);
+   }
+
+4. Populate the delegate methods with appropriate handling
+5. Refer to examples/DBRoulette/Classes/PhotoViewController.m for a more
+   comprehensive example of using DBRestClient

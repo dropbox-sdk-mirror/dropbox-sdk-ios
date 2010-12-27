@@ -1,0 +1,39 @@
+Upgrade instructions
+1. Right-click on the DropboxSDK group in the file browser and select Delete
+2. Select "Also move to trash" option when prompted
+3. Right-click on your project in the file browser
+4. Select Add -> Existing Files...
+5. Navigate and select the DropboxSDK folder from this folder
+6. When prompted, make sure "Copy items into destination group's folder" is
+   selected and press Add
+7. Make sure you update your app's delegate methods to use the new objects
+   returned. Check out the following Changes section for more information
+
+
+Changes from beta version in 0.1
+README:
+  - This file now has step-by-step instructions to getting started using the SDK
+
+DropboxSDK.h:
+  - A single file has been added that you can import to get all important SDK
+    classes
+
+DBRestClient:
+  - initWithSession:root: has been deprecated. All apps are by default have
+    full access.
+  - The delegate response restClient:loadedMetadata: now returns a DBMetadata*
+    object instead of a raw dictionary.
+  - The possible delegate responses from loadMetadata:withHash: now includes
+    restClient:metadataUnchangedAtPath: when no changes to the metadata has
+    occurred since the last loadMetadata:withHash: call.
+  - The delegate response restClient:loadedAccountInfo: now returns a
+    DBAccountInfo* object.
+  - The delegate response restClient:createdFolder: now returns a DBMetadata*
+    object
+
+DBLoginController:
+  - This class has been added to provide a well designed login form with an easy
+    to use interface for developers. It is recommended that you use it in your 
+    app for the least amount of code and best user experience.
+  - Simply create it and call [loginController presentFromController:self] to
+    display on both iPhone and iPad
