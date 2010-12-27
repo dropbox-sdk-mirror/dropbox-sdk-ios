@@ -21,34 +21,30 @@
 
 @implementation DBLoadingView
 
+- (id)init {
+    return [self initWithTitle:nil];
+}
 
 - (id)initWithTitle:(NSString*)theTitle {
     CGRect frame = [[UIApplication sharedApplication] keyWindow].frame;
     if ((self = [super initWithFrame:frame])) {
         self.backgroundColor = [UIColor clearColor];
         self.userInteractionEnabled = NO;
-        
-        CGRect contentFrame = [self beveledBoxFrame];
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
         activityIndicator = 
             [[UIActivityIndicatorView alloc] 
              initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        activityIndicator.center = CGPointMake(
-            floor(contentFrame.origin.x + contentFrame.size.width/2), 
-            floor(contentFrame.origin.y + contentFrame.size.height/2) - kPadding);
         [self addSubview:activityIndicator];
+        
+        imageView = [[UIImageView alloc] init];
+        [self addSubview:imageView];
 
         titleLabel = [UILabel new];
         titleLabel.text = theTitle;
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.textAlignment = UITextAlignmentCenter;
-        CGFloat titleLeading = titleLabel.font.leading;
-        CGRect titleFrame = CGRectMake(
-                contentFrame.origin.x + kPadding, 
-                CGRectGetMaxY(contentFrame) - 2*kPadding - titleLeading, 
-                contentFrame.size.width - 2*kPadding, titleLeading);
-        titleLabel.frame = titleFrame;
         [self addSubview:titleLabel];
     }
     return self;
@@ -78,27 +74,92 @@
     CGContextFillPath(context);
 }
 
+- (void)layoutSubviews {
+    CGRect contentFrame = [self beveledBoxFrame];
+    
+    activityIndicator.center = CGPointMake(
+        floor(contentFrame.origin.x + contentFrame.size.width/2), 
+        floor(contentFrame.origin.y + contentFrame.size.height/2) - kPadding);
+
+    CGFloat titleLeading = titleLabel.font.leading;
+    CGRect titleFrame = CGRectMake(
+            contentFrame.origin.x + kPadding, 
+            CGRectGetMaxY(contentFrame) - 2*kPadding - titleLeading, 
+            contentFrame.size.width - 2*kPadding, titleLeading);
+    titleLabel.frame = titleFrame;
+
+    CGRect imageFrame = imageView.frame;
+    imageFrame.origin.x = contentFrame.origin.x + floor(contentFrame.size.width/2 - imageFrame.size.width/2);
+    imageFrame.origin.y = contentFrame.origin.y + floor(contentFrame.size.height/2 - imageFrame.size.height/2);
+    imageView.frame = imageFrame;
+}
+
 - (void)dealloc {
+    [activityIndicator release];
+    [imageView release];
+    [titleLabel release];
     [super dealloc];
 }
 
+- (void)setImage:(UIImage*)image {
+    imageView.image = image;
+    [imageView sizeToFit];
+    
+    [self setNeedsLayout];
+}
+
+- (void)setOrientation:(UIInterfaceOrientation)newOrientation {
+    if (newOrientation == orientation) return;
+    orientation = newOrientation;
+    
+    if (orientation == UIInterfaceOrientationPortrait) {
+        self.transform = CGAffineTransformIdentity;
+    } else if (orientation == UIInterfaceOrientationPortraitUpsideDown) {
+        self.transform = CGAffineTransformMakeRotation(M_PI);
+    } else if (orientation == UIInterfaceOrientationLandscapeRight) {
+        self.transform = CGAffineTransformMakeRotation(M_PI/2);
+    } else {
+        self.transform = CGAffineTransformMakeRotation(-M_PI/2);
+    }
+}
+
 - (void)show {
-    [activityIndicator startAnimating];
+    if (!imageView.image) {
+        // Only show activity indicator when we don't have an image
+        [activityIndicator startAnimating];
+    }
     UIWindow* window = [[UIApplication sharedApplication] keyWindow];
+    self.frame = window.frame;
     [window addSubview:self];
 }
 
-- (void)dismiss {
+- (void)finishDismiss {
     [activityIndicator stopAnimating];
     [self removeFromSuperview];
+}
+
+- (void)dismissAnimated:(BOOL)animated {
+    if (!animated) {
+        [self finishDismiss];
+    } else {
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.8];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(finishDismiss)];
+
+        self.alpha = 0;
+
+        [UIView commitAnimations];
+    }
 }
 
 - (CGRect)beveledBoxFrame {
     CGSize contentSize = self.bounds.size;
     CGSize boxSize = CGSizeMake(160, 160);
+    CGFloat yOffset = UIInterfaceOrientationIsPortrait(orientation) ? 18 : 0;
     return CGRectMake(
         floor(contentSize.width/2 - boxSize.width/2),
-        floor(contentSize.height/2 - boxSize.height/2) + 18,
+        floor(contentSize.height/2 - boxSize.height/2) + yOffset,
         boxSize.width, boxSize.height);
 }
 

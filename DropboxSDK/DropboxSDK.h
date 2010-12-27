@@ -14,3 +14,4 @@
 #import "DBAccountInfo.h"
 #import "DBMetadata.h"
 #import "DBQuota.h"
+#import "DBError.h"

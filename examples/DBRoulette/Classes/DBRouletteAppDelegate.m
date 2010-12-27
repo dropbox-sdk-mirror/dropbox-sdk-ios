@@ -11,6 +11,11 @@
 #import "PhotoViewController.h"
 #import "RootViewController.h"
 
+@interface DBRouletteAppDelegate () <DBSessionDelegate>
+
+@end
+
+
 @implementation DBRouletteAppDelegate
 
 @synthesize window;
@@ -38,6 +43,7 @@
 	
 	DBSession* session = 
         [[DBSession alloc] initWithConsumerKey:consumerKey consumerSecret:consumerSecret];
+	session.delegate = self; // DBSessionDelegate methods allow you to handle re-authenticating
 	[DBSession setSharedSession:session];
     [session release];
 	
@@ -117,6 +123,14 @@
 	[super dealloc];
 }
 
+
+#pragma mark -
+#pragma mark DBSessionDelegate methods
+
+- (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session {
+	DBLoginController* loginController = [[DBLoginController new] autorelease];
+	[loginController presentFromController:navigationController];
+}
 
 @end
 

@@ -18,9 +18,9 @@
     UITableView* tableView;
     UILabel* descriptionLabel;
     UITableViewCell* emailCell;
-       UITextField* emailField;
+    UITextField* emailField;
     UITableViewCell* passwordCell;
-       UITextField* passwordField;
+    UITextField* passwordField;
     UIView* footerView;
 
     DBLoadingView* loadingView;

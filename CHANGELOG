@@ -10,6 +10,19 @@ Upgrade instructions
    returned. Check out the following Changes section for more information
 
 
+Changes from 0.1 to 0.2
+DBRestClient.h:
+- Various bug fixes
+- Added a new upload callback that gives you the Dropbox path of the file that
+  was just uploaded in addition to the source path.
+
+DBSession.h:
+- You can now get a callback when a request fails due to authentication error.
+  Set yourself as the delegate to DBSession to get these events.
+  For an example of how to implement this check out DBRouletteAppDelegate
+  where it implements sessionDidReceiveAuthorizationFailure:
+
+
 Changes from beta version in 0.1
 README:
   - This file now has step-by-step instructions to getting started using the SDK

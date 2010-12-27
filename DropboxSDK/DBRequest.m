@@ -7,6 +7,7 @@
 //
 
 #import "DBRequest.h"
+#import "DBError.h"
 #import "JSON.h"
 
 
@@ -32,7 +33,7 @@ static id networkRequestDelegate = nil;
 
 - (void) dealloc {
     [urlConnection cancel];
-    
+	
     [request release];
     [urlConnection release];
     [fileHandle release];
@@ -74,33 +75,60 @@ static id networkRequestDelegate = nil;
 - (void)cancel {
     [urlConnection cancel];
     target = nil;
+    
+    if (tempFilename) {
+        [fileHandle closeFile];
+        NSError* rmError;
+        if (![[NSFileManager defaultManager] removeItemAtPath:tempFilename error:&rmError]) {
+            NSLog(@"DBRequest#cancel Error removing temp file: %@", rmError);
+        }
+    }
+    
+    [networkRequestDelegate networkRequestStopped];
 }
 
 #pragma mark NSURLConnection delegate methods
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)aResponse {
     response = [(NSHTTPURLResponse*)aResponse retain];
+    
+    if (resultFilename && [self statusCode] == 200) {
+        // Create the file here so it's created in case it's zero length
+        // File is downloaded into a temporary file and then moved over when completed successfully
+        NSString* filename = 
+            [NSString stringWithFormat:@"%.0f", 1000*[NSDate timeIntervalSinceReferenceDate]];
+        tempFilename = [[NSTemporaryDirectory() stringByAppendingPathComponent:filename] retain];
+        
+        NSFileManager* fileManager = [[NSFileManager new] autorelease];
+        BOOL success = [fileManager createFileAtPath:tempFilename contents:nil attributes:nil];
+        if (!success) {
+            NSLog(@"DBRequest#connection:didReceiveData: Error creating file at path: %@", 
+                    tempFilename);
+        }
+
+        fileHandle = [[NSFileHandle fileHandleForWritingAtPath:tempFilename] retain];
+    }
 }
 
 - (void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data {
     if (resultFilename && [self statusCode] == 200) {
-        if (fileHandle == nil) {
-            // Download file into a temp file first, then move over once entire file has been
-            // downloaded successfully
-            NSString* filename = 
-                [NSString stringWithFormat:@"%.0f", 1000*[NSDate timeIntervalSinceReferenceDate]];
-            tempFilename = [[NSTemporaryDirectory() stringByAppendingPathComponent:filename] retain];
+        @try {
+            [fileHandle writeData:data];
+        } @catch (NSException* e) {
+            // In case we run out of disk space
+            [urlConnection cancel];
+            [fileHandle closeFile];
+            [[NSFileManager defaultManager] removeItemAtPath:tempFilename error:nil];
+            error = [[NSError alloc] initWithDomain:DBErrorDomain
+                                        code:DBErrorInsufficientDiskSpace userInfo:userInfo];
             
-            NSFileManager* fileManager = [[NSFileManager new] autorelease];
-            BOOL success = [fileManager createFileAtPath:tempFilename contents:nil attributes:nil];
-            if (!success) {
-                NSLog(@"DBRequest#connection:didReceiveData: Error creating file at path: %@", 
-                        tempFilename);
-            }
-
-            fileHandle = [[NSFileHandle fileHandleForWritingAtPath:tempFilename] retain];
+            SEL sel = failureSelector ? failureSelector : selector;
+            [target performSelector:sel withObject:self];
+            
+            [networkRequestDelegate networkRequestStopped];
+            
+            return;
         }
-        [fileHandle writeData:data];
     } else {
         if (resultData == nil) {
             resultData = [NSMutableData new];

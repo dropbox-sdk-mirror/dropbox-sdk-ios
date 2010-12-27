@@ -56,6 +56,7 @@
 		D318ABF011E56B40006462E0 /* db_create_account_button_down.png in Resources */ = {isa = PBXBuildFile; fileRef = D318ABEF11E56B40006462E0 /* db_create_account_button_down.png */; };
 		D318AD7D11E68D2B006462E0 /* db_link_button.png in Resources */ = {isa = PBXBuildFile; fileRef = D318AD7B11E68D2B006462E0 /* db_link_button.png */; };
 		D318AD7E11E68D2B006462E0 /* db_link_button_down.png in Resources */ = {isa = PBXBuildFile; fileRef = D318AD7C11E68D2B006462E0 /* db_link_button_down.png */; };
+		D392EB61121CCEF30058785B /* DBError.m in Sources */ = {isa = PBXBuildFile; fileRef = D392EB60121CCEF30058785B /* DBError.m */; };
 		D395DB2211E51828008397A5 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D395DB2011E51828008397A5 /* PhotoViewController.m */; };
 		D395DB2311E51828008397A5 /* PhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D395DB2111E51828008397A5 /* PhotoViewController.xib */; };
 		D395DD1711E55F92008397A5 /* db_link_header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D395DD1611E55F92008397A5 /* db_link_header@2x.png */; };
@@ -154,6 +155,8 @@
 		D318ABEF11E56B40006462E0 /* db_create_account_button_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = db_create_account_button_down.png; sourceTree = "<group>"; };
 		D318AD7B11E68D2B006462E0 /* db_link_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = db_link_button.png; sourceTree = "<group>"; };
 		D318AD7C11E68D2B006462E0 /* db_link_button_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = db_link_button_down.png; sourceTree = "<group>"; };
+		D392EB5F121CCEF30058785B /* DBError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBError.h; sourceTree = "<group>"; };
+		D392EB60121CCEF30058785B /* DBError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBError.m; sourceTree = "<group>"; };
 		D395DB1F11E51828008397A5 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		D395DB2011E51828008397A5 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		D395DB2111E51828008397A5 /* PhotoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PhotoViewController.xib; path = Classes/PhotoViewController.xib; sourceTree = "<group>"; };
@@ -251,6 +254,8 @@
 				D30F594811DA8D9500DE9845 /* DBAccountInfo.m */,
 				D30F594911DA8D9500DE9845 /* DBCreateAccountController.h */,
 				D30F594A11DA8D9500DE9845 /* DBCreateAccountController.m */,
+				D392EB5F121CCEF30058785B /* DBError.h */,
+				D392EB60121CCEF30058785B /* DBError.m */,
 				D3F2F3BA11DC03C50029D8A1 /* DBLoadingView.h */,
 				D3F2F3BB11DC03C50029D8A1 /* DBLoadingView.m */,
 				D30F594E11DA8D9500DE9845 /* DBLoginController.h */,
@@ -472,6 +477,7 @@
 				D3F2F3BC11DC03C50029D8A1 /* DBLoadingView.m in Sources */,
 				D395DB2211E51828008397A5 /* PhotoViewController.m in Sources */,
 				D309CE0D11F4E9EE00377534 /* NSString+Dropbox.m in Sources */,
+				D392EB61121CCEF30058785B /* DBError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

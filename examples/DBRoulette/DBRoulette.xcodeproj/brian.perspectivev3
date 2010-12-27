@@ -268,12 +268,12 @@
 							<array>
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>080E96DDFE201D6D7F000001</string>
+								<string>29B97317FDCFA39411CA2CEA</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>4</integer>
-									<integer>2</integer>
+									<integer>10</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -313,7 +313,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>D395DCF411E55F74008397A5</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>RootViewController.m</string>
+								<string>PhotoViewController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -321,11 +321,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>D395DCF511E55F74008397A5</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>RootViewController.m</string>
+										<string>PhotoViewController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>D309D04111F55D0200377534</string>
+										<string>D3B8BF1312270F42008DC6DD</string>
 										<key>history</key>
 										<array>
 											<string>D395DCF611E55F74008397A5</string>
@@ -343,11 +343,13 @@
 											<string>D395DD0211E55F74008397A5</string>
 											<string>D395DD0311E55F74008397A5</string>
 											<string>D395DD0411E55F74008397A5</string>
-											<string>D395DD0511E55F74008397A5</string>
 											<string>D395DD0611E55F74008397A5</string>
 											<string>D309CE0E11F4E9F800377534</string>
 											<string>D309D03F11F55D0200377534</string>
-											<string>D309D04011F55D0200377534</string>
+											<string>D3B8BEEA12270E99008DC6DD</string>
+											<string>D3B8BEEB12270E99008DC6DD</string>
+											<string>D3B8BF1112270F42008DC6DD</string>
+											<string>D3B8BF1212270F42008DC6DD</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -470,11 +472,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>D309D04211F55D0200377534</string>
+				<string>D3B8BF1412270F42008DC6DD</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>D309D04311F55D0200377534</string>
+				<string>D3B8BF1512270F42008DC6DD</string>
 				<string>D395DCF411E55F74008397A5</string>
-				<string>D309D04411F55D0200377534</string>
+				<string>D3B8BF1612270F42008DC6DD</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>

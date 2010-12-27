@@ -73,6 +73,7 @@ static NSString* kDBDropboxSavedCredentialsKey = @"kDBDropboxSavedCredentialsKey
 }
 
 @synthesize credentialStore;
+@synthesize delegate;
 
 - (void)updateAccessToken:(NSString*)token accessTokenSecret:(NSString*)secret {
     credentialStore.accessToken = token;

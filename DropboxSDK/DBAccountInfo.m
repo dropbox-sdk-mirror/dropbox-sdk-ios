@@ -17,6 +17,7 @@
         displayName = [[dict objectForKey:@"display_name"] retain];
         quota = [[DBQuota alloc] initWithDictionary:[dict objectForKey:@"quota_info"]];
         userId = [[[dict objectForKey:@"uid"] stringValue] retain];
+        referralLink = [[dict objectForKey:@"referral_link"] retain];
     }
     return self;
 }
@@ -26,6 +27,7 @@
     [displayName release];
     [quota release];
     [userId release];
+    [referralLink release];
     [super dealloc];
 }
 
@@ -33,6 +35,7 @@
 @synthesize displayName;
 @synthesize quota;
 @synthesize userId;
+@synthesize referralLink;
 
 
 #pragma mark NSCoding methods
@@ -42,6 +45,7 @@
     [coder encodeObject:displayName forKey:@"displayName"];
     [coder encodeObject:quota forKey:@"quota"];
     [coder encodeObject:userId forKey:@"userId"];
+    [coder encodeObject:referralLink forKey:@"referralLink"];
 }
 
 - (id)initWithCoder:(NSCoder*)coder {
@@ -50,6 +54,7 @@
     displayName = [[coder decodeObjectForKey:@"displayName"] retain];
     quota = [[coder decodeObjectForKey:@"quota"] retain];
     userId = [[coder decodeObjectForKey:@"userId"] retain];
+    referralLink = [[coder decodeObjectForKey:@"referralLink"] retain];
     return self;
 }
 

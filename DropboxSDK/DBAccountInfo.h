@@ -14,6 +14,7 @@
     NSString* displayName;
     DBQuota* quota;
     NSString* userId;
+    NSString* referralLink;
 }
 
 - (id)initWithDictionary:(NSDictionary*)dict;
@@ -22,5 +23,6 @@
 @property (nonatomic, readonly) NSString* displayName;
 @property (nonatomic, readonly) DBQuota* quota;
 @property (nonatomic, readonly) NSString* userId;
+@property (nonatomic, readonly) NSString* referralLink;
 
 @end

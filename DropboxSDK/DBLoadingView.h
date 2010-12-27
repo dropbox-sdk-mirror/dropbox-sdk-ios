@@ -10,14 +10,19 @@
 
 
 @interface DBLoadingView : UIView {
+    UIInterfaceOrientation orientation;
     UILabel* titleLabel;
     UIActivityIndicatorView* activityIndicator;
+    UIImageView* imageView;
 }
 
 - (id)initWithTitle:(NSString*)title;
 
+- (void)setImage:(UIImage*)image;
+- (void)setOrientation:(UIInterfaceOrientation)orientation;
+
 - (void)show;
-- (void)dismiss;
+- (void)dismissAnimated:(BOOL)animated;
 
 //@property (nonatomic, retain) NSString* title;
 

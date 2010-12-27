@@ -400,7 +400,7 @@ replacementString:(NSString *)string {
             loadingView = [[DBLoadingView alloc] initWithTitle:@"Linking"];
             [loadingView show];
         } else {
-            [loadingView dismiss];
+            [loadingView dismissAnimated:NO];
             [loadingView release];
             loadingView = nil;
         }

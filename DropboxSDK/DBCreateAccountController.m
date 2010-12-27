@@ -392,7 +392,7 @@ replacementString:(NSString *)string {
             loadingView = [[DBLoadingView alloc] initWithTitle:@"Creating Account"];
             [loadingView show];
         } else {
-            [loadingView dismiss];
+            [loadingView dismissAnimated:NO];
             [loadingView release];
             loadingView = nil;
         }

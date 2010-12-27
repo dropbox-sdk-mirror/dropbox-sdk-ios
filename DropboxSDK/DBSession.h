@@ -12,10 +12,14 @@ extern NSString* kDBDropboxAPIHost;
 extern NSString* kDBDropboxAPIContentHost;
 extern NSString* kDBDropboxAPIVersion;
 
+@protocol DBSessionDelegate;
+
+
 /*  Creating and setting the shared DBSession should be done before any other Dropbox objects are
     used, perferrably in the UIApplication delegate. */
 @interface DBSession : NSObject {
     MPOAuthCredentialConcreteStore* credentialStore;
+    id<DBSessionDelegate> delegate;
 }
 
 + (DBSession*)sharedSession;
@@ -28,7 +32,13 @@ extern NSString* kDBDropboxAPIVersion;
 - (void)unlink;
 
 @property (nonatomic, readonly) MPOAuthCredentialConcreteStore* credentialStore;
+@property (nonatomic, assign) id<DBSessionDelegate> delegate;
 
 @end
 
 
+@protocol DBSessionDelegate
+
+- (void)sessionDidReceiveAuthorizationFailure:(DBSession*)session;
+
+@end

@@ -13,18 +13,16 @@
 @class DBAccountInfo;
 @class DBMetadata;
 
-
-// Error codes in the dropbox.com domain represent the HTTP status code if less than 1000
-enum {
-    kDBErrorGenericError = 1000,
-    kDBErrorFileNotFound,
-} kDBErrorCode;
-
+extern NSString* kDBProtocolHTTP;
+extern NSString* kDBProtocolHTTPS;
 
 @interface DBRestClient : NSObject {
     DBSession* session;
     NSString* root;
     NSMutableSet* requests;
+    /* Map from path to the load request. Needs to be expanded to a general framework for cancelling
+       requests. */
+    NSMutableDictionary* loadRequests; 
     id<DBRestClientDelegate> delegate;
 }
 
@@ -44,6 +42,7 @@ enum {
 
 /* Loads the file contents at the given root/path and stores the result into destinationPath */
 - (void)loadFile:(NSString *)path intoPath:(NSString *)destinationPath;
+- (void)cancelFileLoad:(NSString*)path;
 
 - (void)loadThumbnail:(NSString *)path ofSize:(NSString *)size intoPath:(NSString *)destinationPath;
 
@@ -101,10 +100,15 @@ enum {
 - (void)restClient:(DBRestClient*)client loadedThumbnail:(NSString*)destPath;
 - (void)restClient:(DBRestClient*)client loadThumbnailFailedWithError:(NSError*)error;
 
-- (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)srcPath;
-- (void)restClient:(DBRestClient*)client uploadProgress:(CGFloat)progress forFile:(NSString*)srcPath;
+- (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath from:(NSString*)srcPath;
+- (void)restClient:(DBRestClient*)client uploadProgress:(CGFloat)progress 
+forFile:(NSString*)destPath from:(NSString*)srcPath;
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error;
 // [error userInfo] contains the sourcePath
+
+// Deprecated upload callbacks
+- (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)srcPath;
+- (void)restClient:(DBRestClient*)client uploadProgress:(CGFloat)progress forFile:(NSString*)srcPath;
 
 - (void)restClient:(DBRestClient*)client createdFolder:(DBMetadata*)folder;
 // Folder is the metadata for the newly created folder

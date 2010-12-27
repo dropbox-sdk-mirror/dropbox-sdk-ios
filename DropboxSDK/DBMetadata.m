@@ -8,8 +8,24 @@
 
 #import "DBMetadata.h"
 
-
 @implementation DBMetadata
+
++ (NSDateFormatter*)dateFormatter {
+	NSMutableDictionary* dictionary = [[NSThread currentThread] threadDictionary];
+	static NSString* dateFormatterKey = @"DBMetadataDateFormatter";
+	
+    NSDateFormatter* dateFormatter = [dictionary objectForKey:dateFormatterKey];
+    if (dateFormatter == nil) {
+        dateFormatter = [[NSDateFormatter new] autorelease];
+        // Must set locale to ensure consistent parsing:
+        // http://developer.apple.com/iphone/library/qa/qa2010/qa1480.html
+		dateFormatter.locale = 
+			[[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+		dateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
+        [dictionary setObject:dateFormatter forKey:dateFormatterKey];
+    }
+    return dateFormatter;
+}
 
 - (id)initWithDictionary:(NSDictionary*)dict {
     if ((self = [super init])) {
@@ -17,9 +33,8 @@
         totalBytes = [[dict objectForKey:@"bytes"] longLongValue];
 
         if ([dict objectForKey:@"modified"]) {
-            NSDateFormatter* dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-            dateFormatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss Z";
-            lastModifiedDate = [[dateFormatter dateFromString:[dict objectForKey:@"modified"]] retain];
+            lastModifiedDate = 
+				[[[DBMetadata dateFormatter] dateFromString:[dict objectForKey:@"modified"]] retain];
         }
 
         path = [[dict objectForKey:@"path"] retain];
