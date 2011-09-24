@@ -9,6 +9,8 @@ Upgrade instructions
 7. Make sure you update your app's delegate methods to use the new objects
    returned. Check out the following Changes section for more information
 
+Changes from 0.2 to 0.3
+- Made DBLoginController compatibile with iOS 5
 
 Changes from 0.1 to 0.2
 DBRestClient.h:

@@ -23,6 +23,8 @@ UITableViewDataSource, UITableViewDelegate>
 - (void)setWorking:(BOOL)working;
 - (void)errorWithTitle:(NSString*)title message:(NSString*)message;
 - (void)updateActionButton;
+- (void)dismiss;
+
 
 @property (nonatomic, readonly) DBRestClient* restClient;
 
@@ -213,8 +215,18 @@ UITableViewDataSource, UITableViewDelegate>
 
 - (void)didPressCancel {
     [self setWorking:NO];
-    [self.navigationController.parentViewController dismissModalViewControllerAnimated:YES];
+    [self dismiss];
     [delegate loginControllerDidCancel:self];
+}
+
+- (void)dismiss {
+    UIViewController *parent = nil;
+    if ([self.navigationController respondsToSelector:@selector(presentingViewController)]) {
+        parent = [self.navigationController performSelector:@selector(presentingViewController)];
+    } else {
+        parent = self.navigationController.parentViewController;
+    }
+    [parent dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -303,16 +315,6 @@ replacementString:(NSString *)string {
         descriptionLabel = 
             [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"db_link_header.png"]];
         descriptionLabel.contentMode = UIViewContentModeCenter;
-/*
-        descriptionLabel = [UILabel new];
-        descriptionLabel.backgroundColor = [UIColor clearColor];
-        descriptionLabel.textColor = [UIColor whiteColor];
-        descriptionLabel.font = [UIFont systemFontOfSize:15];
-        descriptionLabel.textAlignment = UITextAlignmentCenter;
-        descriptionLabel.text = 
-            @"Linking will allow this app to access\nand modify files in your Dropbox";
-        descriptionLabel.numberOfLines = 2;
-*/
     }
     return descriptionLabel;
 }
@@ -365,7 +367,7 @@ replacementString:(NSString *)string {
 
 - (void)restClientDidLogin:(DBRestClient*)client {
     [self setWorking:NO];
-    [self.parentViewController dismissModalViewControllerAnimated:YES];
+    [self dismiss];
     [delegate loginControllerDidLogin:self];
 }
 
