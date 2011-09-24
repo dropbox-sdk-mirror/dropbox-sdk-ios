@@ -1,14 +1,48 @@
 Upgrade instructions
 1. Right-click on the DropboxSDK group in the file browser and select Delete
 2. Select "Also move to trash" option when prompted
-3. Right-click on your project in the file browser
-4. Select Add -> Existing Files...
-5. Navigate and select the DropboxSDK folder from this folder
-6. When prompted, make sure "Copy items into destination group's folder" is
-   selected and press Add
-7. Make sure you update your app's delegate methods to use the new objects
-   returned. Check out the following Changes section for more information
+3. Follow the installation instructions from the README to install the
+   newest version of the SDK
 
+Changes from 0.2 to 1.0
+- The SDK is now packaged as a framework rather than importing the source
+  directly into your project. This allows the SDK to work with projects
+  that are using ARC.
+- Because the SDK is now a framework, you need to import DropboxSDK.h like this:
+  #import <DropboxSDK/DropboxSDK.h>
+- The SDK uses an all new authentication method. First, the SDK is no longer
+  able to login or create accounts directly, instead you need to call link
+  on the DBSession object. This will launch the official iOS app if it's
+  installed, and Safari otherwise, and the user will have the option of
+  approving your app for access. See the Authentication guide on
+  https://www.dropbox.com/developers for more details.
+- The SDK can now handle linking multiple users to the same app.
+- DBMetadata objects now have a "rev" field, which deprecates the old revision
+  field.
+- You can now load a list of past revisions for a file using
+  loadRevisionsForFile: on DBRestClient. This call returns a list of DBMetadata
+  objects that represent each revision. To restore the file to that state,
+  you can call restoreFile:toRev:. You can also download the contents of the
+  file at that state using loadFile:atRev:intoPath:.
+- The upload call has been updated in several ways. First it takes an optional
+  parentRev parameter, which indicates the parent version of the file you are
+  uploading. If the file on the server does not have the same rev, it will
+  spin off a conflicted copy with a different name. If you do not provide a rev,
+  it will assume the file is new, and uploading to that file will spin off a
+  conflicted copy if any file with the same name exists there. The upload
+  DBRestClientDelegate callback also provides the metadata of the newly uploaded
+  file, called restClient:uploadedFile:from:metadata:. The metadata will contain
+  the path of the file if it is not the same as specified on upload due to
+  conflicts.
+- Searching the contents of the user's Dropbox is now possible using the
+  searchPath:forKeyword: method on DBRestClient
+- Generate links to files that can be shared with other users using the
+  loadSharableLinkForFile: method on DBRestClient
+- Get a link that can be used to stream audio and video for a limited amount of
+  time using the loadStreamableURLForFile: method on DBRestClient
+- Downloading a thumbnail of a .png or .gif will now download a .png instead of
+  .jpeg to cut down on artifacts
+- Various bug fixes
 
 Changes from 0.1 to 0.2
 DBRestClient.h:

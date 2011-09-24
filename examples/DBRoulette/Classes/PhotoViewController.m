@@ -7,7 +7,7 @@
 //
 
 #import "PhotoViewController.h"
-#import "DropboxSDK.h"
+#import <DropboxSDK/DropboxSDK.h>
 #import <stdlib.h>
 
 
@@ -59,6 +59,14 @@
     }
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return toInterfaceOrientation == UIInterfaceOrientationPortrait;
+    } else {
+        return YES;
+    }
+}
+
 @synthesize imageView;
 @synthesize nextButton;
 @synthesize activityIndicator;
@@ -73,7 +81,7 @@
     NSArray* validExtensions = [NSArray arrayWithObjects:@"jpg", @"jpeg", nil];
     NSMutableArray* newPhotoPaths = [NSMutableArray new];
     for (DBMetadata* child in metadata.contents) {
-    	NSString* extension = [[child.path pathExtension] lowercaseString];
+        NSString* extension = [[child.path pathExtension] lowercaseString];
         if (!child.isDirectory && [validExtensions indexOfObject:extension] != NSNotFound) {
             [newPhotoPaths addObject:child.path];
         }
@@ -108,15 +116,29 @@
 
 - (void)didPressRandomPhoto {
     [self setWorking:YES];
-    [self.restClient loadMetadata:@"/Photos" withHash:photosHash];
+
+    NSString *photosRoot = nil;
+    if ([DBSession sharedSession].root == kDBRootDropbox) {
+        photosRoot = @"/Photos";
+    } else {
+        photosRoot = @"/";
+    }
+
+    [self.restClient loadMetadata:photosRoot withHash:photosHash];
 }
 
 - (void)loadRandomPhoto {
     if ([photoPaths count] == 0) {
+
+        NSString *msg = nil;
+        if ([DBSession sharedSession].root == kDBRootDropbox) {
+            msg = @"Put .jpg photos in your Photos folder to use DBRoulette!";
+        } else {
+            msg = @"Put .jpg photos in your app's App folder to use DBRoulette!";
+        }
+
         [[[[UIAlertView alloc] 
-           initWithTitle:@"No Photos!" 
-           message:@"You must have at least 1 photo in your Dropbox Photos folder to use this app." 
-           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]
+           initWithTitle:@"No Photos!" message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]
           autorelease]
          show];
         
@@ -177,8 +199,8 @@
 
 - (DBRestClient*)restClient {
     if (restClient == nil) {
-    	restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
-    	restClient.delegate = self;
+        restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+        restClient.delegate = self;
     }
     return restClient;
 }

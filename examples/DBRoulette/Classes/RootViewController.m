@@ -7,10 +7,10 @@
 //
 
 #import "RootViewController.h"
-#import "DropboxSDK.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 
-@interface RootViewController () <DBLoginControllerDelegate>
+@interface RootViewController ()
 
 - (void)updateButtons;
 
@@ -28,11 +28,9 @@
 
 - (void)didPressLink {
     if (![[DBSession sharedSession] isLinked]) {
-        DBLoginController* controller = [[DBLoginController new] autorelease];
-        controller.delegate = self;
-        [controller presentFromController:self];
+		[[DBSession sharedSession] link];
     } else {
-        [[DBSession sharedSession] unlink];
+        [[DBSession sharedSession] unlinkAll];
         [[[[UIAlertView alloc] 
            initWithTitle:@"Account Unlinked!" message:@"Your dropbox account has been unlinked" 
            delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]
@@ -64,23 +62,18 @@
     linkButton = nil;
 }
 
-
 - (void)dealloc {
     [linkButton release];
     [photoViewController release];
     [super dealloc];
 }
 
-
-#pragma mark DBLoginControllerDelegate methods
-
-- (void)loginControllerDidLogin:(DBLoginController*)controller {
-    [self updateButtons];
-    [self.navigationController pushViewController:photoViewController animated:YES];
-}
-
-- (void)loginControllerDidCancel:(DBLoginController*)controller {
-
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return toInterfaceOrientation == UIInterfaceOrientationPortrait;
+    } else {
+        return YES;
+    }
 }
 
 

@@ -13,6 +13,7 @@
     UIWindow *window;
     UINavigationController *navigationController;
     RootViewController *rootViewController;
+	NSString *relinkUserId;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
