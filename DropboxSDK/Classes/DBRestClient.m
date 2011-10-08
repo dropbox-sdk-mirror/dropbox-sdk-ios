@@ -423,7 +423,7 @@ params:(NSDictionary *)params
          autorelease];
     request.uploadProgressSelector = @selector(requestUploadProgress:);
     request.userInfo = 
-		[NSDictionary dictionaryWithObjectsAndKeys:sourcePath, @"sourcePath", destPath, "destinationPath", nil];
+		[NSDictionary dictionaryWithObjectsAndKeys:sourcePath, @"sourcePath", destPath, @"destinationPath", nil];
     
     [uploadRequests setObject:request forKey:destPath];
 }
