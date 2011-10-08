@@ -4,7 +4,7 @@ Upgrade instructions
 3. Follow the installation instructions from the README to install the
    newest version of the SDK
 
-Changes from 0.2 to 1.0
+Changes from 0.3 to 1.0
 - The SDK is now packaged as a framework rather than importing the source
   directly into your project. This allows the SDK to work with projects
   that are using ARC.
@@ -43,6 +43,11 @@ Changes from 0.2 to 1.0
 - Downloading a thumbnail of a .png or .gif will now download a .png instead of
   .jpeg to cut down on artifacts
 - Various bug fixes
+
+
+Changes from 0.2 to 0.3
+- Made DBLoginController compatibile with iOS 5
+
 
 Changes from 0.1 to 0.2
 DBRestClient.h:

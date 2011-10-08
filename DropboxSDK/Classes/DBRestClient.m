@@ -422,7 +422,8 @@ params:(NSDictionary *)params
           initWithURLRequest:urlRequest andInformTarget:self selector:@selector(requestDidUploadFile:)]
          autorelease];
     request.uploadProgressSelector = @selector(requestUploadProgress:);
-    request.userInfo = [NSDictionary dictionaryWithObject:destPath forKey:@"destinationPath"];
+    request.userInfo = 
+		[NSDictionary dictionaryWithObjectsAndKeys:sourcePath, @"sourcePath", destPath, "destinationPath", nil];
     
     [uploadRequests setObject:request forKey:destPath];
 }
@@ -455,20 +456,17 @@ params:(NSDictionary *)params
 
 
 - (void)requestDidUploadFile:(DBRequest*)request {
-    if (request.error) {
+    NSDictionary *result = [request parseResponseAsType:[NSDictionary class]];
+
+    if (!result) {
         [self checkForAuthenticationFailure:request];
         if ([delegate respondsToSelector:@selector(restClient:uploadFileFailedWithError:)]) {
             [delegate restClient:self uploadFileFailedWithError:request.error];
         }
     } else {
-        DBMetadata *metadata = nil;
-        NSObject *result = request.resultJSON;
-        if ([result isKindOfClass:[NSDictionary class]]) {
-            metadata = [[[DBMetadata alloc] initWithDictionary:(NSDictionary *)result] autorelease];
-        }
+        DBMetadata *metadata = [[[DBMetadata alloc] initWithDictionary:result] autorelease];
 
-    
-        NSString* sourcePath = [(NSDictionary*)request.userInfo objectForKey:@"sourcePath"];
+        NSString* sourcePath = [request.userInfo objectForKey:@"sourcePath"];
         NSString* destPath = [request.userInfo objectForKey:@"destinationPath"];
         
         if ([delegate respondsToSelector:@selector(restClient:uploadedFile:from:metadata:)]) {
