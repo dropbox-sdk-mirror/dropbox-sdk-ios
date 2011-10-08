@@ -14,29 +14,12 @@
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		28C286E10D94DF7D0034E888 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C286E00D94DF7D0034E888 /* RootViewController.m */; };
 		28F335F11007B36200424DE2 /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F335F01007B36200424DE2 /* RootViewController.xib */; };
-		D35BECEB14130F6000479FCC /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3BE6E1C13E12DD700EE539B /* DropboxSDK.framework */; };
 		D35BECED14130F6F00479FCC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D35BECEC14130F6F00479FCC /* Security.framework */; };
 		D35BECEF1413103400479FCC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D35BECEE1413103400479FCC /* CoreGraphics.framework */; };
+		D37963D91433CCFE0020EF34 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37963D81433CCFE0020EF34 /* DropboxSDK.framework */; };
 		D395DB2211E51828008397A5 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D395DB2011E51828008397A5 /* PhotoViewController.m */; };
 		D395DB2311E51828008397A5 /* PhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D395DB2111E51828008397A5 /* PhotoViewController.xib */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		D3196BEF141304B50060E7C6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D3BE6D1713E12DD700EE539B /* DropboxSDK.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D3196B821412FE180060E7C6;
-			remoteInfo = DropboxSDK;
-		};
-		D3BE6E1B13E12DD700EE539B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D3BE6D1713E12DD700EE539B /* DropboxSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = DropboxSDK;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -53,10 +36,10 @@
 		8D1107310486CEB800E47090 /* DBRoulette-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DBRoulette-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D35BECEC14130F6F00479FCC /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D35BECEE1413103400479FCC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		D37963D81433CCFE0020EF34 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = ../../DropboxSDK.framework; sourceTree = "<group>"; };
 		D395DB1F11E51828008397A5 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		D395DB2011E51828008397A5 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		D395DB2111E51828008397A5 /* PhotoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PhotoViewController.xib; path = Classes/PhotoViewController.xib; sourceTree = "<group>"; };
-		D3BE6D1713E12DD700EE539B /* DropboxSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = DropboxSDK.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,10 +48,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D35BECEF1413103400479FCC /* CoreGraphics.framework in Frameworks */,
-				D35BECEB14130F6000479FCC /* DropboxSDK.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				D35BECED14130F6F00479FCC /* Security.framework in Frameworks */,
+				D37963D91433CCFE0020EF34 /* DropboxSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,7 +82,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				D3BE6C2F13E12DD600EE539B /* DropboxSDK */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -132,29 +114,13 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D37963D81433CCFE0020EF34 /* DropboxSDK.framework */,
 				D35BECEE1413103400479FCC /* CoreGraphics.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				D35BECEC14130F6F00479FCC /* Security.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D3BE6C2F13E12DD600EE539B /* DropboxSDK */ = {
-			isa = PBXGroup;
-			children = (
-				D3BE6D1713E12DD700EE539B /* DropboxSDK.xcodeproj */,
-			);
-			name = DropboxSDK;
-			path = ../../DropboxSDK;
-			sourceTree = SOURCE_ROOT;
-		};
-		D3BE6D1813E12DD700EE539B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D3BE6E1C13E12DD700EE539B /* DropboxSDK.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,7 +137,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				D3196BF0141304B50060E7C6 /* PBXTargetDependency */,
 			);
 			name = DBRoulette;
 			productName = "Dropbox Notes";
@@ -199,28 +164,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = D3BE6D1813E12DD700EE539B /* Products */;
-					ProjectRef = D3BE6D1713E12DD700EE539B /* DropboxSDK.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* DBRoulette */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		D3BE6E1C13E12DD700EE539B /* DropboxSDK.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = DropboxSDK.framework;
-			remoteRef = D3BE6E1B13E12DD700EE539B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -249,20 +198,16 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		D3196BF0141304B50060E7C6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = DropboxSDK;
-			targetProxy = D3196BEF141304B50060E7C6 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../..\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -279,6 +224,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../..\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = DBRoulette_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
