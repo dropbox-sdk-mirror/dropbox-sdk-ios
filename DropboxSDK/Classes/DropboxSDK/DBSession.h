@@ -8,9 +8,11 @@
 
 #import "MPOAuthCredentialConcreteStore.h"
 
+extern NSString *kDBSDKVersion;
+
 extern NSString *kDBDropboxAPIHost;
 extern NSString *kDBDropboxAPIContentHost;
-extern NSString* kDBDropboxWebHost;
+extern NSString *kDBDropboxWebHost;
 extern NSString *kDBDropboxAPIVersion;
 
 extern NSString *kDBRootDropbox;

@@ -26,6 +26,8 @@
 
 + (NSString *)bestLanguage;
 
++ (NSString *)userAgent;
+
 - (NSMutableURLRequest*)requestWithHost:(NSString*)host path:(NSString*)path 
     parameters:(NSDictionary*)params;
 
@@ -378,7 +380,7 @@ signature:(NSString *)sig {
 - (void)uploadFile:(NSString*)filename toPath:(NSString*)path fromPath:(NSString *)sourcePath
 params:(NSDictionary *)params
 {
-    BOOL isDir;
+    BOOL isDir = NO;
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:sourcePath isDirectory:&isDir];
     NSDictionary *fileAttrs = 
         [[NSFileManager defaultManager] attributesOfItemAtPath:sourcePath error:nil];
@@ -423,7 +425,7 @@ params:(NSDictionary *)params
          autorelease];
     request.uploadProgressSelector = @selector(requestUploadProgress:);
     request.userInfo = 
-		[NSDictionary dictionaryWithObjectsAndKeys:sourcePath, @"sourcePath", destPath, @"destinationPath", nil];
+        [NSDictionary dictionaryWithObjectsAndKeys:sourcePath, @"sourcePath", destPath, @"destinationPath", nil];
     
     [uploadRequests setObject:request forKey:destPath];
 }
@@ -899,6 +901,19 @@ params:(NSDictionary *)params
     return preferredLang;
 }
 
++ (NSString *)userAgent	{
+    static NSString *userAgent;
+    if (!userAgent) {
+        NSBundle *bundle = [NSBundle mainBundle];
+        NSString *appName = [[bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"]
+                              stringByReplacingOccurrencesOfString:@" " withString:@""];
+        NSString *appVersion = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        userAgent =
+            [[NSString alloc] initWithFormat:@"%@/%@ OfficialDropboxIosSdk/%@", appName, appVersion, kDBSDKVersion];
+    }
+    return userAgent;
+}
+
 - (NSMutableURLRequest*)requestWithHost:(NSString*)host path:(NSString*)path 
     parameters:(NSDictionary*)params {
     
@@ -934,6 +949,7 @@ params:(NSDictionary *)params
             urlRequestSignedWithSecret:self.credentialStore.signingKey 
             usingMethod:self.credentialStore.signatureMethod];
     [urlRequest setTimeoutInterval:20];
+    [urlRequest setValue:[DBRestClient userAgent] forHTTPHeaderField:@"User-Agent"];
     return urlRequest;
 }
 
