@@ -219,14 +219,14 @@
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../../DropboxSDK/JSON/NSObject+SBJSON.h</string>
+						<string key="minorKey">../../DropboxSDK/JSON/NSObject+DBJSON.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../../DropboxSDK/JSON/SBJsonWriter.h</string>
+						<string key="minorKey">../../DropboxSDK/JSON/DBJsonWriter.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

@@ -27,15 +27,15 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJSON.h"
+#import "DBJSON.h"
 
-@implementation SBJSON
+@implementation DBJSON
 
 - (id)init {
     self = [super init];
     if (self) {
-        jsonWriter = [SBJsonWriter new];
-        jsonParser = [SBJsonParser new];
+        jsonWriter = [DBJsonWriter new];
+        jsonParser = [DBJsonParser new];
         [self setMaxDepth:512];
 
     }

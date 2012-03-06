@@ -151,22 +151,32 @@
             [delegate restClient:self loadMetadataFailedWithError:request.error];
         }
     } else {
-        [self performSelectorInBackground:@selector(parseMetadataWithRequest:) withObject:request];
+        SEL sel = @selector(parseMetadataWithRequest:resultThread:);
+        NSMethodSignature *sig = [self methodSignatureForSelector:sel];
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
+        [inv setTarget:self];
+        [inv setSelector:sel];
+        [inv setArgument:&request atIndex:2];
+        NSThread *currentThread = [NSThread currentThread];
+        [inv setArgument:&currentThread atIndex:3];
+        [inv retainArguments];
+        [inv performSelectorInBackground:@selector(invoke) withObject:nil];
     }
 
     [requests removeObject:request];
 }
 
 
-- (void)parseMetadataWithRequest:(DBRequest*)request {
+- (void)parseMetadataWithRequest:(DBRequest*)request resultThread:(NSThread *)thread {
     NSAutoreleasePool* pool = [NSAutoreleasePool new];
     
     NSDictionary* result = (NSDictionary*)[request resultJSON];
     DBMetadata* metadata = [[[DBMetadata alloc] initWithDictionary:result] autorelease];
     if (metadata) {
-        [self performSelectorOnMainThread:@selector(didParseMetadata:) withObject:metadata waitUntilDone:NO];
+        [self performSelector:@selector(didParseMetadata:) onThread:thread withObject:metadata waitUntilDone:NO];
     } else {
-        [self performSelectorOnMainThread:@selector(parseMetadataFailedForRequest:) withObject:request waitUntilDone:NO];
+        [self performSelector:@selector(parseMetadataFailedForRequest:) onThread:thread
+                   withObject:request waitUntilDone:NO];
     }
     
     [pool drain];
@@ -249,10 +259,15 @@ contentType:(NSString*)contentType eTag:(NSString*)eTag {
         NSString* filename = request.resultFilename;
         NSDictionary* headers = [request.response allHeaderFields];
         NSString* contentType = [headers objectForKey:@"Content-Type"];
+        NSDictionary* metadataDict = [request xDropboxMetadataJSON];
         NSString* eTag = [headers objectForKey:@"Etag"];
         if ([delegate respondsToSelector:@selector(restClient:loadedFile:)]) {
             [delegate restClient:self loadedFile:filename];
+        } else if ([delegate respondsToSelector:@selector(restClient:loadedFile:contentType:metadata:)]) {
+            DBMetadata* metadata = [[[DBMetadata alloc] initWithDictionary:metadataDict] autorelease];
+            [delegate restClient:self loadedFile:filename contentType:contentType metadata:metadata];
         } else if ([delegate respondsToSelector:@selector(restClient:loadedFile:contentType:)]) {
+            // This callback is deprecated and this block exists only for backwards compatibility.
             [delegate restClient:self loadedFile:filename contentType:contentType];
         } else if ([delegate respondsToSelector:@selector(restClient:loadedFile:contentType:eTag:)]) {
             // This code is for the official Dropbox client to get eTag information from the server
@@ -322,8 +337,14 @@ contentType:(NSString*)contentType eTag:(NSString*)eTag {
             [delegate restClient:self loadThumbnailFailedWithError:request.error];
         }
     } else {
-        if ([delegate respondsToSelector:@selector(restClient:loadedThumbnail:)]) {
-            [delegate restClient:self loadedThumbnail:request.resultFilename];
+        NSString* filename = request.resultFilename;
+        NSDictionary* metadataDict = [request xDropboxMetadataJSON];
+        if ([delegate respondsToSelector:@selector(restClient:loadedThumbnail:metadata:)]) {
+            DBMetadata* metadata = [[[DBMetadata alloc] initWithDictionary:metadataDict] autorelease];
+            [delegate restClient:self loadedThumbnail:filename metadata:metadata];
+        } else if ([delegate respondsToSelector:@selector(restClient:loadedThumbnail:)]) {
+            // This callback is deprecated and this block exists only for backwards compatibility.
+            [delegate restClient:self loadedThumbnail:filename];
         }
     }
 
@@ -901,7 +922,7 @@ params:(NSDictionary *)params
     return preferredLang;
 }
 
-+ (NSString *)userAgent	{
++ (NSString *)userAgent {
     static NSString *userAgent;
     if (!userAgent) {
         NSBundle *bundle = [NSBundle mainBundle];

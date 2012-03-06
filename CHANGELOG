@@ -4,6 +4,16 @@ Upgrade instructions
 3. Follow the installation instructions from the README to install the
    newest version of the SDK
 
+Changes from 1.0 to 1.1
+- The SBJson library included in the DropboxSDK framework has been renamed to
+  DBJson to prevent duplicate symbols with other libraries that use SBJson
+- The loadFile and loadThumbnail APIs now support callbacks that also return
+  metadata. loadFile - for the file being downloaded. loadThumbnail - for the
+  file whose thumbnail is being downloaded.
+- Removed email from DBAccountInfo. This field is being deprecated from the API.
+  userId is the recommended way to reference an account.
+- Various bug fixes
+
 Changes from 0.3 to 1.0
 - The SDK is now packaged as a framework rather than importing the source
   directly into your project. This allows the SDK to work with projects

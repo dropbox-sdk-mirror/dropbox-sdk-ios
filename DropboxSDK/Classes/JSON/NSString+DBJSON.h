@@ -34,7 +34,7 @@
  
 This is a category on NSString that adds methods for parsing the target string.
 */
-@interface NSString (NSString_SBJSON)
+@interface NSString (NSString_DBJSON)
 
 
 /**
