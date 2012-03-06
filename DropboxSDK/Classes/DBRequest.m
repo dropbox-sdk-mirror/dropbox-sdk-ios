@@ -48,6 +48,7 @@ static id networkRequestDelegate = nil;
     [fileHandle release];
     [userInfo release];
     [response release];
+    [xDropboxMetadataJSON release];
     [resultFilename release];
     [tempFilename release];
     [resultData release];
@@ -61,6 +62,7 @@ static id networkRequestDelegate = nil;
 @synthesize userInfo;
 @synthesize request;
 @synthesize response;
+@synthesize xDropboxMetadataJSON;
 @synthesize downloadProgress;
 @synthesize uploadProgress;
 @synthesize resultData;
@@ -81,8 +83,20 @@ static id networkRequestDelegate = nil;
     return [response statusCode];
 }
 
-- (long long)contentLength {
-    return [[[response allHeaderFields] objectForKey:@"Content-Length"] longLongValue];
+- (long long)responseBodySize {
+    // Use the content-length header, if available.
+    long long contentLength = [[[response allHeaderFields] objectForKey:@"Content-Length"] longLongValue];
+    if (contentLength > 0) return contentLength;
+
+    // Fall back on the bytes field in the metadata x-header, if available.
+    if (xDropboxMetadataJSON != nil) {
+        id bytes = [xDropboxMetadataJSON objectForKey:@"bytes"];
+        if (bytes != nil) {
+            return [bytes longLongValue];
+        }
+    }
+
+    return 0;
 }
 
 - (void)cancel {
@@ -114,7 +128,10 @@ static id networkRequestDelegate = nil;
 
 - (void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)aResponse {
     response = [(NSHTTPURLResponse*)aResponse retain];
-    
+
+    // Parse out the x-response-metadata as JSON.
+    xDropboxMetadataJSON = [[[[response allHeaderFields] objectForKey:@"X-Dropbox-Metadata"] JSONValue] retain];
+
     if (resultFilename && [self statusCode] == 200) {
         // Create the file here so it's created in case it's zero length
         // File is downloaded into a temporary file and then moved over when completed successfully
@@ -157,12 +174,12 @@ static id networkRequestDelegate = nil;
         }
         [resultData appendData:data];
     }
-    
+
     bytesDownloaded += [data length];
-    
-    long long contentLength = [self contentLength];
-    if (contentLength > 0) {
-        downloadProgress = (CGFloat)bytesDownloaded / (CGFloat)contentLength;
+
+    long long responseBodySize = [self responseBodySize];
+    if (responseBodySize > 0) {
+        downloadProgress = (CGFloat)bytesDownloaded / (CGFloat)responseBodySize;
         if (downloadProgressSelector) {
             [target performSelector:downloadProgressSelector withObject:self];
         }
@@ -181,7 +198,7 @@ static id networkRequestDelegate = nil;
         NSString* resultString = [self resultString];
         if ([resultString length] > 0) {
             @try {
-                SBJsonParser *jsonParser = [SBJsonParser new];
+                DBJsonParser *jsonParser = [DBJsonParser new];
                 NSObject* resultJSON = [jsonParser objectWithString:resultString];
                 [jsonParser release];
                 
@@ -204,7 +221,7 @@ static id networkRequestDelegate = nil;
             DBLogError(@"DBRequest#connectionDidFinishLoading: error getting file attrs: %@", moveError);
             [fileManager removeItemAtPath:tempFilename error:nil];
             [self setError:[NSError errorWithDomain:moveError.domain code:moveError.code userInfo:self.userInfo]];
-        } else if ([self contentLength] != 0 && [self contentLength] != [fileAttrs fileSize]) {
+        } else if ([self responseBodySize] != 0 && [self responseBodySize] != [fileAttrs fileSize]) {
             // This happens in iOS 4.0 when the network connection changes while loading
             [fileManager removeItemAtPath:tempFilename error:nil];
             [self setError:[NSError errorWithDomain:DBErrorDomain code:DBErrorGenericError userInfo:self.userInfo]];
@@ -263,6 +280,10 @@ static id networkRequestDelegate = nil;
     if (uploadProgressSelector) {
         [target performSelector:uploadProgressSelector withObject:self];
     }
+}
+
+- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)response {
+	return nil;
 }
 
 

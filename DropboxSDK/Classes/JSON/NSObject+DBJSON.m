@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2007-2009 Stig Brautaset. All rights reserved.
+ Copyright (C) 2009 Stig Brautaset. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -27,34 +27,32 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "NSString+SBJSON.h"
-#import "SBJsonParser.h"
+#import "NSObject+DBJSON.h"
+#import "DBJsonWriter.h"
 
 #import "DBDefines.h"
 
 
-@implementation NSString (NSString_SBJSON)
+@implementation NSObject (NSObject_DBJSON)
 
-- (id)JSONFragmentValue
-{
-    SBJsonParser *jsonParser = [SBJsonParser new];    
-    id repr = [jsonParser fragmentWithString:self];    
-    if (!repr)
-        NSLog(@"-JSONFragmentValue failed. Error trace is: %@", [jsonParser errorTrace]);
-    [jsonParser release];
-    return repr;
+- (NSString *)JSONFragment {
+    DBJsonWriter *jsonWriter = [DBJsonWriter new];
+    NSString *json = [jsonWriter stringWithFragment:self];    
+    if (!json)
+        NSLog(@"-JSONFragment failed. Error trace is: %@", [jsonWriter errorTrace]);
+    [jsonWriter release];
+    return json;
 }
 
-- (id)JSONValue
-{
-    SBJsonParser *jsonParser = [SBJsonParser new];
-    id repr = [jsonParser objectWithString:self];
-    if (!repr)
-        NSLog(@"-JSONValue failed. Error trace is: %@", [jsonParser errorTrace]);
-    [jsonParser release];
-    return repr;
+- (NSString *)JSONRepresentation {
+    DBJsonWriter *jsonWriter = [DBJsonWriter new];    
+    NSString *json = [jsonWriter stringWithObject:self];
+    if (!json)
+        NSLog(@"-JSONRepresentation failed. Error trace is: %@", [jsonWriter errorTrace]);
+    [jsonWriter release];
+    return json;
 }
 
 @end
 
-DB_FIX_CATEGORY_BUG(NSString_SBJSON)
+DB_FIX_CATEGORY_BUG(NSObject_DBJSON)

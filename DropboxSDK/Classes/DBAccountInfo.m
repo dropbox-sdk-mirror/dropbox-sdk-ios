@@ -13,7 +13,6 @@
 
 - (id)initWithDictionary:(NSDictionary*)dict {
     if ((self = [super init])) {
-        email = [[dict objectForKey:@"email"] retain];
         country = [[dict objectForKey:@"country"] retain];
         displayName = [[dict objectForKey:@"display_name"] retain];
         if ([dict objectForKey:@"quota_info"]) {
@@ -34,7 +33,6 @@
     [super dealloc];
 }
 
-@synthesize email;
 @synthesize country;
 @synthesize displayName;
 @synthesize quota;
@@ -45,7 +43,6 @@
 #pragma mark NSCoding methods
 
 - (void)encodeWithCoder:(NSCoder*)coder {
-    [coder encodeObject:email forKey:@"email"];
     [coder encodeObject:country forKey:@"country"];
     [coder encodeObject:displayName forKey:@"displayName"];
     [coder encodeObject:quota forKey:@"quota"];
@@ -55,7 +52,6 @@
 
 - (id)initWithCoder:(NSCoder*)coder {
     self = [super init];
-    email = [[coder decodeObjectForKey:@"email"] retain];
     country = [[coder decodeObjectForKey:@"country"] retain];
     displayName = [[coder decodeObjectForKey:@"displayName"] retain];
     quota = [[coder decodeObjectForKey:@"quota"] retain];

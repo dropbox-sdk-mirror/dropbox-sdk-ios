@@ -29,7 +29,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * SBJSONErrorDomain;
+extern NSString * DBJSONErrorDomain;
 
 
 enum {
@@ -52,7 +52,7 @@ enum {
 
  This class contains the common error-handling code and option between the parser/writer.
  */
-@interface SBJsonBase : NSObject {
+@interface DBJsonBase : NSObject {
     NSMutableArray *errorTrace;
 
 @protected
