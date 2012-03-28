@@ -4,6 +4,20 @@ Upgrade instructions
 3. Follow the installation instructions from the README to install the
    newest version of the SDK
 
+Changes from 1.1 to 1.2
+- The copy and move delegate callbacks have been changed to return the metadata
+  of the file copied/moved rather than just the path it was copied/moved to.
+  The new delegate callbacks are named restClient:copiedPath:to: and
+  restClient:movedPath:to:
+- DBMetadata objects have a new field, clientMtime, which is a displayable
+  time for the last time the files contents were modified.
+- Added DropboxOSX.framework, an OSX compatible version of the Dropbox SDK
+- -[DBRestClient loadDelta:] method added, which loads a list of metadata
+  entries that have changed since the last time the method was called.
+- -[DBRestClient createCopyRef] and -[DBRestClient copyFromRef:toPath:] methods
+  were also added, which give you the ability to copy files between Dropboxes
+  without downloading and re-uploading the file
+
 Changes from 1.0 to 1.1
 - The SBJson library included in the DropboxSDK framework has been renamed to
   DBJson to prevent duplicate symbols with other libraries that use SBJson

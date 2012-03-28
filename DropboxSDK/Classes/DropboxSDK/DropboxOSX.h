@@ -1,5 +1,5 @@
 /*
- *  DropboxSDK.h
+ *  DropboxOSX.h
  *  DropboxSDK
  *
  *  Created by Brian Smith on 7/13/10.
@@ -17,4 +17,4 @@
 #import "DBError.h"
 #import "NSString+Dropbox.h"
 
-#import "DBSession+iOS.h"
+#import "DBAuthHelperOSX.h"

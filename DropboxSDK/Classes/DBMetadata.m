@@ -37,6 +37,11 @@
                 [[[DBMetadata dateFormatter] dateFromString:[dict objectForKey:@"modified"]] retain];
         }
 
+        if ([dict objectForKey:@"client_mtime"]) {
+            clientMtime =
+                [[[DBMetadata dateFormatter] dateFromString:[dict objectForKey:@"client_mtime"]] retain];
+        }
+
         path = [[dict objectForKey:@"path"] retain];
         isDirectory = [[dict objectForKey:@"is_dir"] boolValue];
         
@@ -65,6 +70,7 @@
 
 - (void)dealloc {
     [lastModifiedDate release];
+    [clientMtime release];
     [path release];
     [contents release];
     [hash release];
@@ -79,6 +85,7 @@
 @synthesize thumbnailExists;
 @synthesize totalBytes;
 @synthesize lastModifiedDate;
+@synthesize clientMtime;
 @synthesize path;
 @synthesize isDirectory;
 @synthesize contents;
@@ -111,6 +118,7 @@
         thumbnailExists = [coder decodeBoolForKey:@"thumbnailExists"];
         totalBytes = [coder decodeInt64ForKey:@"totalBytes"];
         lastModifiedDate = [[coder decodeObjectForKey:@"lastModifiedDate"] retain];
+        clientMtime = [[coder decodeObjectForKey:@"clientMtime"] retain];
         path = [[coder decodeObjectForKey:@"path"] retain];
         isDirectory = [coder decodeBoolForKey:@"isDirectory"];
         contents = [[coder decodeObjectForKey:@"contents"] retain];
@@ -129,6 +137,7 @@
     [coder encodeBool:thumbnailExists forKey:@"thumbnailExists"];
     [coder encodeInt64:totalBytes forKey:@"totalBytes"];
     [coder encodeObject:lastModifiedDate forKey:@"lastModifiedDate"];
+    [coder encodeObject:clientMtime forKey:@"clientMtime"];
     [coder encodeObject:path forKey:@"path"];
     [coder encodeBool:isDirectory forKey:@"isDirectory"];
     [coder encodeObject:contents forKey:@"contents"];
