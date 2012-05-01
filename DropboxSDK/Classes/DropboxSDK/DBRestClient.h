@@ -29,6 +29,9 @@
 - (id)initWithSession:(DBSession*)session;
 - (id)initWithSession:(DBSession *)session userId:(NSString *)userId;
 
+/* Cancels all outstanding requests. No callback for those requests will be sent */
+- (void)cancelAllRequests;
+
 
 /* Loads metadata for the object at the given root/path and returns the result to the delegate as a 
    dictionary */

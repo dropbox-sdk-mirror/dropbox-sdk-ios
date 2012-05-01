@@ -4,6 +4,12 @@ Upgrade instructions
 3. Follow the installation instructions from the README to install the
    newest version of the SDK
 
+Changes from 1.2 to 1.2.1
+- Made DropboxOSX.framework compatible with 32-bit apps
+- Added the -[DBRestClient cancelAllRequests] method
+- Store all access tokens in the keychain rather than userDefaults. The SDK
+  will migrate and remove existing credentials stored in your app's userDefaults
+
 Changes from 1.1 to 1.2
 - The copy and move delegate callbacks have been changed to return the metadata
   of the file copied/moved rather than just the path it was copied/moved to.

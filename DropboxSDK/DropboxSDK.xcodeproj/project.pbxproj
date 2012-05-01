@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D32C1E1B1532707800672F20 /* DBKeychain-OSX.m in Sources */ = {isa = PBXBuildFile; fileRef = D32C1E191532707800672F20 /* DBKeychain-OSX.m */; };
+		D32C1E2515327BCA00672F20 /* DBRestClient+OSX.m in Sources */ = {isa = PBXBuildFile; fileRef = D33A120A1527C21700D3BC28 /* DBRestClient+OSX.m */; };
+		D33A120C1527C21700D3BC28 /* DBRestClient+OSX.m in Sources */ = {isa = PBXBuildFile; fileRef = D33A120A1527C21700D3BC28 /* DBRestClient+OSX.m */; };
+		D33A120D1527C21700D3BC28 /* DBSession+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = D33A120B1527C21700D3BC28 /* DBSession+iOS.m */; };
+		D33A122D152EB42100D3BC28 /* DBKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = D33A122B152EB42000D3BC28 /* DBKeychain.h */; };
+		D33A122E152EB42100D3BC28 /* DBKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = D33A122B152EB42000D3BC28 /* DBKeychain.h */; };
+		D356AF301533F092002EE795 /* DBKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = D33A122B152EB42000D3BC28 /* DBKeychain.h */; };
 		D36931CE15088350003FBA23 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D36931CD15088350003FBA23 /* Cocoa.framework */; };
 		D36931E1150884E4003FBA23 /* DBAccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581214135C3E0013E17C /* DBAccountInfo.m */; };
 		D36931E2150884E4003FBA23 /* DBError.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581414135C3E0013E17C /* DBError.m */; };
@@ -77,8 +84,6 @@
 		D369322315088508003FBA23 /* DBJsonBase.h in Headers */ = {isa = PBXBuildFile; fileRef = D387584014135C3E0013E17C /* DBJsonBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D369322415088508003FBA23 /* DBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = D387584114135C3E0013E17C /* DBJsonParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D369322515088508003FBA23 /* DBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = D387584214135C3E0013E17C /* DBJsonWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D369322A1508857E003FBA23 /* DBRestClient+OSX.m in Sources */ = {isa = PBXBuildFile; fileRef = D36932271508857E003FBA23 /* DBRestClient+OSX.m */; };
-		D369322C1508859E003FBA23 /* DBRestClient+OSX.m in Sources */ = {isa = PBXBuildFile; fileRef = D36932271508857E003FBA23 /* DBRestClient+OSX.m */; };
 		D369322D150885AA003FBA23 /* DBRestClient+OSX.h in Headers */ = {isa = PBXBuildFile; fileRef = D36932261508857E003FBA23 /* DBRestClient+OSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3693230150886A6003FBA23 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D369322E1508867E003FBA23 /* Security.framework */; };
 		D387586314135C3E0013E17C /* DBAccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581214135C3E0013E17C /* DBAccountInfo.m */; };
@@ -154,6 +159,8 @@
 		D38758AD14135C3E0013E17C /* NSDictionary+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D387586014135C3E0013E17C /* NSDictionary+Dropbox.m */; };
 		D38758AE14135C3E0013E17C /* NSString+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D387586114135C3E0013E17C /* NSString+Dropbox.m */; };
 		D38758AF14135C3E0013E17C /* UIAlertView+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D387586214135C3E0013E17C /* UIAlertView+Dropbox.m */; };
+		D38B090C15329C2D00BFE072 /* DBKeychain-iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = D38B090B15329C2D00BFE072 /* DBKeychain-iOS.m */; };
+		D38B090D15329C2D00BFE072 /* DBKeychain-iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = D38B090B15329C2D00BFE072 /* DBKeychain-iOS.m */; };
 		D3933BE6145F12AD00E15FA7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 		D3933C06145F145E00E15FA7 /* DBAccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581214135C3E0013E17C /* DBAccountInfo.m */; };
 		D3933C07145F145E00E15FA7 /* DBError.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581414135C3E0013E17C /* DBError.m */; };
@@ -189,7 +196,6 @@
 		D3933C25145F145E00E15FA7 /* NSString+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D387586114135C3E0013E17C /* NSString+Dropbox.m */; };
 		D3933C26145F145E00E15FA7 /* UIAlertView+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D387586214135C3E0013E17C /* UIAlertView+Dropbox.m */; };
 		D3CC896B150834470079CBE8 /* DBSession+iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CC8969150834470079CBE8 /* DBSession+iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D3CC896D150834470079CBE8 /* DBSession+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = D3CC896A150834470079CBE8 /* DBSession+iOS.m */; };
 		D3DE1F4315089E2E00280C38 /* DropboxOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = D36932281508857E003FBA23 /* DropboxOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3F4730A151F8FA10041AA64 /* DBDeltaEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F47306151F8FA10041AA64 /* DBDeltaEntry.m */; };
 		D3F4730B151F8FA10041AA64 /* DBDeltaEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F47306151F8FA10041AA64 /* DBDeltaEntry.m */; };
@@ -204,13 +210,16 @@
 		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D3196B831412FE180060E7C6 /* DropboxSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropboxSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3196B841412FE180060E7C6 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		D32C1E191532707800672F20 /* DBKeychain-OSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DBKeychain-OSX.m"; path = "Classes/DBKeychain-OSX.m"; sourceTree = SOURCE_ROOT; };
+		D33A120A1527C21700D3BC28 /* DBRestClient+OSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DBRestClient+OSX.m"; path = "Classes/DBRestClient+OSX.m"; sourceTree = SOURCE_ROOT; };
+		D33A120B1527C21700D3BC28 /* DBSession+iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DBSession+iOS.m"; path = "Classes/DBSession+iOS.m"; sourceTree = SOURCE_ROOT; };
+		D33A122B152EB42000D3BC28 /* DBKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBKeychain.h; sourceTree = "<group>"; };
 		D36931CC15088350003FBA23 /* DropboxOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DropboxOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D36931CD15088350003FBA23 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		D36931D015088350003FBA23 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		D36931D115088350003FBA23 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		D36931D215088350003FBA23 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D36932261508857E003FBA23 /* DBRestClient+OSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DBRestClient+OSX.h"; sourceTree = "<group>"; };
-		D36932271508857E003FBA23 /* DBRestClient+OSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DBRestClient+OSX.m"; sourceTree = "<group>"; };
 		D36932281508857E003FBA23 /* DropboxOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxOSX.h; sourceTree = "<group>"; };
 		D369322E1508867E003FBA23 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		D387581214135C3E0013E17C /* DBAccountInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBAccountInfo.m; path = ../DBAccountInfo.m; sourceTree = "<group>"; };
@@ -287,13 +296,13 @@
 		D387586014135C3E0013E17C /* NSDictionary+Dropbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Dropbox.m"; sourceTree = "<group>"; };
 		D387586114135C3E0013E17C /* NSString+Dropbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Dropbox.m"; sourceTree = "<group>"; };
 		D387586214135C3E0013E17C /* UIAlertView+Dropbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Dropbox.m"; sourceTree = "<group>"; };
+		D38B090B15329C2D00BFE072 /* DBKeychain-iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "DBKeychain-iOS.m"; path = "Classes/DBKeychain-iOS.m"; sourceTree = SOURCE_ROOT; };
 		D3933BE5145F12AD00E15FA7 /* libSDropboxSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSDropboxSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3A7352113DE89B100C52E4F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D3A7362913DE8AD500C52E4F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D3C2EC7D15088DFC004120AD /* DropboxOSX-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DropboxOSX-Info.plist"; sourceTree = "<group>"; };
 		D3C2EC7E15088DFC004120AD /* DropboxOSX-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DropboxOSX-Prefix.pch"; sourceTree = "<group>"; };
 		D3CC8969150834470079CBE8 /* DBSession+iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DBSession+iOS.h"; sourceTree = "<group>"; };
-		D3CC896A150834470079CBE8 /* DBSession+iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DBSession+iOS.m"; sourceTree = "<group>"; };
 		D3F47306151F8FA10041AA64 /* DBDeltaEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBDeltaEntry.m; path = Classes/DBDeltaEntry.m; sourceTree = SOURCE_ROOT; };
 		D3F4730E151F8FE30041AA64 /* DBDeltaEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBDeltaEntry.h; sourceTree = "<group>"; };
 		D3F473CB1520D83A0041AA64 /* DBAuthHelperOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBAuthHelperOSX.h; sourceTree = "<group>"; };
@@ -397,19 +406,22 @@
 				D387581314135C3E0013E17C /* DBDefines.h */,
 				D3F47306151F8FA10041AA64 /* DBDeltaEntry.m */,
 				D387581414135C3E0013E17C /* DBError.m */,
+				D38B090B15329C2D00BFE072 /* DBKeychain-iOS.m */,
+				D32C1E191532707800672F20 /* DBKeychain-OSX.m */,
 				D387581614135C3E0013E17C /* DBLog.m */,
 				D387581714135C3E0013E17C /* DBMetadata.m */,
 				D387581814135C3E0013E17C /* DBQuota.m */,
 				D387581914135C3E0013E17C /* DBRequest.m */,
 				D387581A14135C3E0013E17C /* DBRestClient.m */,
-				D36932271508857E003FBA23 /* DBRestClient+OSX.m */,
+				D33A120A1527C21700D3BC28 /* DBRestClient+OSX.m */,
 				D387581B14135C3E0013E17C /* DBSession.m */,
-				D3CC896A150834470079CBE8 /* DBSession+iOS.m */,
+				D33A120B1527C21700D3BC28 /* DBSession+iOS.m */,
 				D387581D14135C3E0013E17C /* Base64Transcoder.h */,
 				D387581E14135C3E0013E17C /* DBAccountInfo.h */,
 				D3F473CB1520D83A0041AA64 /* DBAuthHelperOSX.h */,
 				D387581F14135C3E0013E17C /* DBError.h */,
 				D3F4730E151F8FE30041AA64 /* DBDeltaEntry.h */,
+				D33A122B152EB42000D3BC28 /* DBKeychain.h */,
 				D387582114135C3E0013E17C /* DBLog.h */,
 				D387582214135C3E0013E17C /* DBMetadata.h */,
 				D387582314135C3E0013E17C /* DBQuota.h */,
@@ -545,6 +557,7 @@
 				D387589514135C3E0013E17C /* DropboxSDK-Prefix.pch in Headers */,
 				D3CC896B150834470079CBE8 /* DBSession+iOS.h in Headers */,
 				D3F4730F151F8FE30041AA64 /* DBDeltaEntry.h in Headers */,
+				D33A122D152EB42100D3BC28 /* DBKeychain.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,6 +606,7 @@
 				D369322515088508003FBA23 /* DBJsonWriter.h in Headers */,
 				D3F47311151F8FE30041AA64 /* DBDeltaEntry.h in Headers */,
 				D3F473CD1520D83A0041AA64 /* DBAuthHelperOSX.h in Headers */,
+				D356AF301533F092002EE795 /* DBKeychain.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -600,6 +614,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D33A122E152EB42100D3BC28 /* DBKeychain.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -745,9 +760,10 @@
 				D38758AD14135C3E0013E17C /* NSDictionary+Dropbox.m in Sources */,
 				D38758AE14135C3E0013E17C /* NSString+Dropbox.m in Sources */,
 				D38758AF14135C3E0013E17C /* UIAlertView+Dropbox.m in Sources */,
-				D3CC896D150834470079CBE8 /* DBSession+iOS.m in Sources */,
-				D369322A1508857E003FBA23 /* DBRestClient+OSX.m in Sources */,
 				D3F4730A151F8FA10041AA64 /* DBDeltaEntry.m in Sources */,
+				D33A120C1527C21700D3BC28 /* DBRestClient+OSX.m in Sources */,
+				D33A120D1527C21700D3BC28 /* DBSession+iOS.m in Sources */,
+				D38B090C15329C2D00BFE072 /* DBKeychain-iOS.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -763,7 +779,7 @@
 				D36931E5150884E4003FBA23 /* DBQuota.m in Sources */,
 				D36931E6150884E4003FBA23 /* DBRequest.m in Sources */,
 				D36931E7150884E4003FBA23 /* DBRestClient.m in Sources */,
-				D369322C1508859E003FBA23 /* DBRestClient+OSX.m in Sources */,
+				D32C1E2515327BCA00672F20 /* DBRestClient+OSX.m in Sources */,
 				D36931E8150884E4003FBA23 /* DBSession.m in Sources */,
 				D36931E9150884E4003FBA23 /* NSObject+DBJSON.m in Sources */,
 				D36931EA150884E4003FBA23 /* NSString+DBJSON.m in Sources */,
@@ -790,6 +806,7 @@
 				D36931FF150884E4003FBA23 /* NSDictionary+Dropbox.m in Sources */,
 				D3693200150884E4003FBA23 /* NSString+Dropbox.m in Sources */,
 				D3F4730C151F8FA10041AA64 /* DBDeltaEntry.m in Sources */,
+				D32C1E1B1532707800672F20 /* DBKeychain-OSX.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,6 +848,7 @@
 				D3933C25145F145E00E15FA7 /* NSString+Dropbox.m in Sources */,
 				D3933C26145F145E00E15FA7 /* UIAlertView+Dropbox.m in Sources */,
 				D3F4730B151F8FA10041AA64 /* DBDeltaEntry.m in Sources */,
+				D38B090D15329C2D00BFE072 /* DBKeychain-iOS.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -936,7 +954,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -973,7 +991,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;

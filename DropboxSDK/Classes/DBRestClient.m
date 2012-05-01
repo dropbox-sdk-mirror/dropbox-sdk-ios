@@ -68,22 +68,34 @@
 }
 
 
-- (void)dealloc {
+- (void)cancelAllRequests {
     for (DBRequest* request in requests) {
         [request cancel];
     }
-    [requests release];
+    [requests removeAllObjects];
+
     for (DBRequest* request in [loadRequests allValues]) {
         [request cancel];
     }
-    [loadRequests release];
+    [loadRequests removeAllObjects];
+
     for (DBRequest* request in [imageLoadRequests allValues]) {
         [request cancel];
     }
-    [imageLoadRequests release];
+    [imageLoadRequests removeAllObjects];
+
     for (DBRequest* request in [uploadRequests allValues]) {
         [request cancel];
     }
+    [uploadRequests removeAllObjects];
+}
+
+
+- (void)dealloc {
+    [self cancelAllRequests];
+    [requests release];
+    [loadRequests release];
+    [imageLoadRequests release];
     [uploadRequests release];
     [session release];
     [userId release];

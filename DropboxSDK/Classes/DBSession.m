@@ -8,11 +8,12 @@
 
 #import "DBSession.h"
 
+#import "DBKeychain.h"
 #import "DBLog.h"
 #import "MPOAuthCredentialConcreteStore.h"
 #import "MPOAuthSignatureParameter.h"
 
-NSString *kDBSDKVersion = @"1.2"; // TODO: parameterize from build system
+NSString *kDBSDKVersion = @"1.2.1"; // TODO: parameterize from build system
 
 NSString *kDBDropboxAPIHost = @"api.dropbox.com";
 NSString *kDBDropboxAPIContentHost = @"api-content.dropbox.com";
@@ -27,17 +28,18 @@ NSString *kDBProtocolHTTPS = @"https";
 NSString *kDBDropboxUnknownUserId = @"unknown";
 
 static DBSession *_sharedSession = nil;
-static NSString *kDBDropboxSavedCredentialsOld = @"kDBDropboxSavedCredentialsKey";
-static NSString *kDBDropboxSavedCredentials = @"kDBDropboxSavedCredentials";
+static NSString *kDBDropboxSavedCredentialsOldOld = @"kDBDropboxSavedCredentialsKey";
+static NSString *kDBDropboxSavedCredentialsOld = @"kDBDropboxSavedCredentials";
 static NSString *kDBDropboxUserCredentials = @"kDBDropboxUserCredentials";
 static NSString *kDBDropboxUserId = @"kDBDropboxUserId";
+static NSString *kDBCredentialsVersionKey = @"DBCredentialVersion";
+static NSInteger kDBCredentialsVersion = 2;
+
 
 
 @interface DBSession ()
 
-- (NSDictionary*)savedCredentials;
 - (void)saveCredentials;
-- (void)clearSavedCredentials;
 - (void)setAccessToken:(NSString *)token accessTokenSecret:(NSString *)secret forUserId:(NSString *)userId;
 
 @end
@@ -66,29 +68,58 @@ static NSString *kDBDropboxUserId = @"kDBDropboxUserId";
                 
         credentialStores = [NSMutableDictionary new];
         
-        NSDictionary *oldSavedCredentials =
-            [[NSUserDefaults standardUserDefaults] objectForKey:kDBDropboxSavedCredentialsOld];
-        if (oldSavedCredentials) {
-            if ([key isEqual:[oldSavedCredentials objectForKey:kMPOAuthCredentialConsumerKey]]) {
-                NSString *token = [oldSavedCredentials objectForKey:kMPOAuthCredentialAccessToken];
-                NSString *secret = [oldSavedCredentials objectForKey:kMPOAuthCredentialAccessTokenSecret];
-                [self setAccessToken:token accessTokenSecret:secret forUserId:kDBDropboxUnknownUserId];
+        NSDictionary *oldOldCredentials =
+            [[NSUserDefaults standardUserDefaults] objectForKey:kDBDropboxSavedCredentialsOldOld];
+        if (oldOldCredentials) {
+            if ([key isEqual:[oldOldCredentials objectForKey:kMPOAuthCredentialConsumerKey]]) {
+                // These credentials are the same structure as version 1, but in userDefaults
+                NSString *token = [oldOldCredentials objectForKey:kMPOAuthCredentialAccessToken];
+                NSString *secret = [oldOldCredentials objectForKey:kMPOAuthCredentialAccessTokenSecret];
+                [self updateAccessToken:token accessTokenSecret:secret forUserId:kDBDropboxUnknownUserId];
             }
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDBDropboxSavedCredentialsOldOld];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
-        
-        NSDictionary *savedCredentials = [self savedCredentials];
+
+        NSDictionary *oldCredentials =
+            [[NSUserDefaults standardUserDefaults] objectForKey:kDBDropboxSavedCredentialsOld];
+        if (oldCredentials) {
+            if ([key isEqual:[oldCredentials objectForKey:kMPOAuthCredentialConsumerKey]]) {
+                // These credentials are the same structure as version 2, but in userDefaults and missing version
+				NSArray *allUserCredentials = [oldCredentials objectForKey:kDBDropboxUserCredentials];
+				for (NSDictionary *userCredentials in allUserCredentials) {
+					NSString *userId = [userCredentials objectForKey:kDBDropboxUserId];
+					NSString *token = [userCredentials objectForKey:kMPOAuthCredentialAccessToken];
+					NSString *secret = [userCredentials objectForKey:kMPOAuthCredentialAccessTokenSecret];
+					[self setAccessToken:token accessTokenSecret:secret forUserId:userId];
+				}
+				[self saveCredentials];
+            }
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDBDropboxSavedCredentialsOld];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+
+        NSDictionary *savedCredentials = [DBKeychain credentials];
         if (savedCredentials != nil) {
             if ([key isEqualToString:[savedCredentials objectForKey:kMPOAuthCredentialConsumerKey]]) {
-            
-                NSArray *allUserCredentials = [savedCredentials objectForKey:kDBDropboxUserCredentials];
-                for (NSDictionary *userCredentials in allUserCredentials) {
-                    NSString *userId = [userCredentials objectForKey:kDBDropboxUserId];
-                    NSString *token = [userCredentials objectForKey:kMPOAuthCredentialAccessToken];
-                    NSString *secret = [userCredentials objectForKey:kMPOAuthCredentialAccessTokenSecret];
-                    [self setAccessToken:token accessTokenSecret:secret forUserId:userId];
+                NSInteger version = [[savedCredentials objectForKey:kDBCredentialsVersionKey] intValue];
+                if (version == 1) {
+                    // These credentials are version 1 in the keychain
+                    NSString *token = [savedCredentials objectForKey:kMPOAuthCredentialAccessToken];
+                    NSString *secret = [savedCredentials objectForKey:kMPOAuthCredentialAccessTokenSecret];
+                    [self updateAccessToken:token accessTokenSecret:secret forUserId:kDBDropboxUnknownUserId];
+                } else {
+                    // These credentials are version 2 in the keychain
+                    NSArray *allUserCredentials = [savedCredentials objectForKey:kDBDropboxUserCredentials];
+                    for (NSDictionary *userCredentials in allUserCredentials) {
+                        NSString *userId = [userCredentials objectForKey:kDBDropboxUserId];
+                        NSString *token = [userCredentials objectForKey:kMPOAuthCredentialAccessToken];
+                        NSString *secret = [userCredentials objectForKey:kMPOAuthCredentialAccessTokenSecret];
+                        [self setAccessToken:token accessTokenSecret:secret forUserId:userId];
+                    }
                 }
             } else {
-                [self clearSavedCredentials];
+                [DBKeychain deleteCredentials];
             }
         }
         
@@ -136,7 +167,7 @@ static NSString *kDBDropboxUserId = @"kDBDropboxUserId";
 
 - (void)unlinkAll {
     [credentialStores removeAllObjects];
-    [self clearSavedCredentials];
+    [DBKeychain deleteCredentials];
 }
 
 - (void)unlinkUserId:(NSString *)userId {
@@ -161,12 +192,12 @@ static NSString *kDBDropboxUserId = @"kDBDropboxUserId";
 
 #pragma mark private methods
 
-- (NSDictionary *)savedCredentials {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:kDBDropboxSavedCredentials];
-}
-
 - (void)saveCredentials {
-    NSMutableDictionary *credentials = [NSMutableDictionary dictionaryWithDictionary:baseCredentials];
+    NSMutableDictionary *credentials = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                        [baseCredentials objectForKey:kMPOAuthCredentialConsumerKey], kMPOAuthCredentialConsumerKey,
+                                        [NSNumber numberWithInt:kDBCredentialsVersion], kDBCredentialsVersionKey,
+                                        nil];
+
     NSMutableArray *allUserCredentials = [NSMutableArray array];
     for (NSString *userId in [credentialStores allKeys]) {
         MPOAuthCredentialConcreteStore *store = [credentialStores objectForKey:userId];
@@ -178,16 +209,7 @@ static NSString *kDBDropboxUserId = @"kDBDropboxUserId";
         [userCredentials release];
     }
     [credentials setObject:allUserCredentials forKey:kDBDropboxUserCredentials];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:credentials forKey:kDBDropboxSavedCredentials];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDBDropboxSavedCredentialsOld];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [DBKeychain setCredentials:credentials];
 }
-
-- (void)clearSavedCredentials {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kDBDropboxSavedCredentials];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
 
 @end
