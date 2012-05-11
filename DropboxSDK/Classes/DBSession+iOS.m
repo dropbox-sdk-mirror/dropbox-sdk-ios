@@ -67,7 +67,7 @@ static NSString *kDBProtocolDropbox = @"dbapi-1";
     if ([[UIApplication sharedApplication] canOpenURL:dbURL]) {
         urlStr = [NSString stringWithFormat:@"%@?k=%@&s=%@%@", dbURL, consumerKey, secret, userIdStr];
     } else {
-        urlStr = [NSString stringWithFormat:@"%@://%@/%@/connect?k=%@&s=%@%@",
+        urlStr = [NSString stringWithFormat:@"%@://%@/%@/connect?k=%@&s=%@&dca=1&%@",
                   kDBProtocolHTTPS, kDBDropboxWebHost, kDBDropboxAPIVersion, consumerKey, secret, userIdStr];
     }
 
