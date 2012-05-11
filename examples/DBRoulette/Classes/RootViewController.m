@@ -28,7 +28,7 @@
 
 - (void)didPressLink {
     if (![[DBSession sharedSession] isLinked]) {
-		[[DBSession sharedSession] link];
+		[[DBSession sharedSession] linkFromController:self];
     } else {
         [[DBSession sharedSession] unlinkAll];
         [[[[UIAlertView alloc] 

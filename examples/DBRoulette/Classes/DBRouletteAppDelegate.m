@@ -11,7 +11,7 @@
 #import "PhotoViewController.h"
 #import "RootViewController.h"
 
-@interface DBRouletteAppDelegate () <DBSessionDelegate>
+@interface DBRouletteAppDelegate () <DBSessionDelegate, DBNetworkRequestDelegate>
 
 @end
 
@@ -62,6 +62,8 @@
 	[DBSession setSharedSession:session];
     [session release];
 	
+	[DBRequest setNetworkRequestDelegate:self];
+
 	if (errorMsg != nil) {
 		[[[[UIAlertView alloc]
 		   initWithTitle:@"Error Configuring Session" message:errorMsg 
@@ -178,10 +180,30 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)index {
 	if (index != alertView.cancelButtonIndex) {
-		[[DBSession sharedSession] linkUserId:relinkUserId];
+		[[DBSession sharedSession] linkUserId:relinkUserId fromController:rootViewController];
 	}
 	[relinkUserId release];
 	relinkUserId = nil;
+}
+
+
+#pragma mark -
+#pragma mark DBNetworkRequestDelegate methods
+
+static int outstandingRequests;
+
+- (void)networkRequestStarted {
+	outstandingRequests++;
+	if (outstandingRequests == 1) {
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	}
+}
+
+- (void)networkRequestStopped {
+	outstandingRequests--;
+	if (outstandingRequests == 0) {
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+	}
 }
 
 @end

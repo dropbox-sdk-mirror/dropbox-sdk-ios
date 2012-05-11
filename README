@@ -31,10 +31,12 @@ Adding DropboxSDK to your project:
    DropboxSDK.framework subfolder
 5. Select "Copy items into destination group's folder"
 6. Press Add button
-7. Ensure that you have the Security.framework added to your project. To do this
-   in Xcode4, select your project file in the file explorer, select your target,
-   and select the "Build Phases" sub-tab. Under "Link Binary with Libraries",
-   press the + button, select Security.framework, and press Add.
+7. Ensure that you have the Security.framework and QuartzCore.framework are
+   added to your project. To do this in Xcode4, select your project file in 
+   the file explorer, select your target, and select the "Build Phases" sub-tab.
+   Under "Link Binary with Libraries", press the + button, select 
+   Security.framework, and press Add. Repeat for QuartzCore.framework if
+   necessary.
 8. Build your application. At this point you should have no build failures or
    warnings
 

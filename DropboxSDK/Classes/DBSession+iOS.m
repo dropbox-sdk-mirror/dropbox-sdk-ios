@@ -10,12 +10,27 @@
 
 #import <CommonCrypto/CommonDigest.h>
 
+#import "DBConnectController.h"
 #import "DBLog.h"
 
 
 static NSString *kDBProtocolDropbox = @"dbapi-1";
 
 @implementation DBSession (iOS)
+
++ (NSDictionary*)parseURLParams:(NSString *)query {
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSMutableDictionary *params = [[[NSMutableDictionary alloc] init] autorelease];
+    for (NSString *pair in pairs) {
+        NSArray *kv = [pair componentsSeparatedByString:@"="];
+        NSString *val =
+        [[kv objectAtIndex:1]
+         stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+        [params setObject:val forKey:[kv objectAtIndex:0]];
+    }
+    return params;
+}
 
 - (NSString *)appScheme {
     NSString *consumerKey = [baseCredentials objectForKey:kMPOAuthCredentialConsumerKey];
@@ -39,7 +54,7 @@ static NSString *kDBProtocolDropbox = @"dbapi-1";
     return NO;
 }
 
-- (void)linkUserId:(NSString *)userId {
+- (void)linkUserId:(NSString *)userId fromController:(UIViewController *)rootController {
     if (![self appConformsToScheme]) {
         DBLogError(@"DropboxSDK: unable to link; app isn't registered for correct URL scheme (%@)", [self appScheme]);
         return;
@@ -66,31 +81,23 @@ static NSString *kDBProtocolDropbox = @"dbapi-1";
     [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/connect", kDBProtocolDropbox, kDBDropboxAPIVersion]];
     if ([[UIApplication sharedApplication] canOpenURL:dbURL]) {
         urlStr = [NSString stringWithFormat:@"%@?k=%@&s=%@%@", dbURL, consumerKey, secret, userIdStr];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlStr]];
     } else {
-        urlStr = [NSString stringWithFormat:@"%@://%@/%@/connect?k=%@&s=%@&dca=1&%@",
+        urlStr = [NSString stringWithFormat:@"%@://%@/%@/connect_login?k=%@&s=%@&%@",
                   kDBProtocolHTTPS, kDBDropboxWebHost, kDBDropboxAPIVersion, consumerKey, secret, userIdStr];
-    }
+        UIViewController *connectController = [[[DBConnectController alloc] initWithUrl:[NSURL URLWithString:urlStr]] autorelease];
+        UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:connectController] autorelease];
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            connectController.modalPresentationStyle = UIModalPresentationFormSheet;
+            navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        }
 
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlStr]];
+        [rootController presentModalViewController:navController animated:YES];
+    }
 }
 
-- (void)link {
-    [self linkUserId:nil];
-}
-
-/* A private function for parsing URL parameters. */
-- (NSDictionary*)parseURLParams:(NSString *)query {
-    NSArray *pairs = [query componentsSeparatedByString:@"&"];
-    NSMutableDictionary *params = [[[NSMutableDictionary alloc] init] autorelease];
-    for (NSString *pair in pairs) {
-        NSArray *kv = [pair componentsSeparatedByString:@"="];
-        NSString *val =
-        [[kv objectAtIndex:1]
-         stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-        [params setObject:val forKey:[kv objectAtIndex:0]];
-    }
-    return params;
+- (void)linkFromController:(UIViewController *)rootController {
+    [self linkUserId:nil fromController:rootController];
 }
 
 - (BOOL)handleOpenURL:(NSURL *)url {
@@ -103,7 +110,7 @@ static NSString *kDBProtocolDropbox = @"dbapi-1";
     NSString *methodName = [components count] > 1 ? [components objectAtIndex:1] : nil;
 
     if ([methodName isEqual:@"connect"]) {
-        NSDictionary *params = [self parseURLParams:[url query]];
+        NSDictionary *params = [DBSession parseURLParams:[url query]];
         NSString *token = [params objectForKey:@"oauth_token"];
         NSString *secret = [params objectForKey:@"oauth_token_secret"];
         NSString *userId = [params objectForKey:@"uid"];

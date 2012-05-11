@@ -197,6 +197,8 @@
 		D3933C26145F145E00E15FA7 /* UIAlertView+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D387586214135C3E0013E17C /* UIAlertView+Dropbox.m */; };
 		D3CC896B150834470079CBE8 /* DBSession+iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CC8969150834470079CBE8 /* DBSession+iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3DE1F4315089E2E00280C38 /* DropboxOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = D36932281508857E003FBA23 /* DropboxOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3ED1B31155498F50023FE9F /* DBConnectController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3ED1B2F155498F50023FE9F /* DBConnectController.h */; };
+		D3ED1B431559F9950023FE9F /* DBConnectController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3ED1B421559F9950023FE9F /* DBConnectController.m */; };
 		D3F4730A151F8FA10041AA64 /* DBDeltaEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F47306151F8FA10041AA64 /* DBDeltaEntry.m */; };
 		D3F4730B151F8FA10041AA64 /* DBDeltaEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F47306151F8FA10041AA64 /* DBDeltaEntry.m */; };
 		D3F4730C151F8FA10041AA64 /* DBDeltaEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D3F47306151F8FA10041AA64 /* DBDeltaEntry.m */; };
@@ -303,6 +305,8 @@
 		D3C2EC7D15088DFC004120AD /* DropboxOSX-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DropboxOSX-Info.plist"; sourceTree = "<group>"; };
 		D3C2EC7E15088DFC004120AD /* DropboxOSX-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DropboxOSX-Prefix.pch"; sourceTree = "<group>"; };
 		D3CC8969150834470079CBE8 /* DBSession+iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DBSession+iOS.h"; sourceTree = "<group>"; };
+		D3ED1B2F155498F50023FE9F /* DBConnectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBConnectController.h; sourceTree = "<group>"; };
+		D3ED1B421559F9950023FE9F /* DBConnectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBConnectController.m; path = Classes/DBConnectController.m; sourceTree = SOURCE_ROOT; };
 		D3F47306151F8FA10041AA64 /* DBDeltaEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBDeltaEntry.m; path = Classes/DBDeltaEntry.m; sourceTree = SOURCE_ROOT; };
 		D3F4730E151F8FE30041AA64 /* DBDeltaEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBDeltaEntry.h; sourceTree = "<group>"; };
 		D3F473CB1520D83A0041AA64 /* DBAuthHelperOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBAuthHelperOSX.h; sourceTree = "<group>"; };
@@ -403,6 +407,7 @@
 			children = (
 				D387581214135C3E0013E17C /* DBAccountInfo.m */,
 				D3F473D81521774C0041AA64 /* DBAuthHelperOSX.m */,
+				D3ED1B421559F9950023FE9F /* DBConnectController.m */,
 				D387581314135C3E0013E17C /* DBDefines.h */,
 				D3F47306151F8FA10041AA64 /* DBDeltaEntry.m */,
 				D387581414135C3E0013E17C /* DBError.m */,
@@ -460,6 +465,7 @@
 				D387584114135C3E0013E17C /* DBJsonParser.h */,
 				D387584214135C3E0013E17C /* DBJsonWriter.h */,
 				D387584314135C3E0013E17C /* UIAlertView+Dropbox.h */,
+				D3ED1B2F155498F50023FE9F /* DBConnectController.h */,
 			);
 			path = DropboxSDK;
 			sourceTree = "<group>";
@@ -558,6 +564,7 @@
 				D3CC896B150834470079CBE8 /* DBSession+iOS.h in Headers */,
 				D3F4730F151F8FE30041AA64 /* DBDeltaEntry.h in Headers */,
 				D33A122D152EB42100D3BC28 /* DBKeychain.h in Headers */,
+				D3ED1B31155498F50023FE9F /* DBConnectController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,6 +771,7 @@
 				D33A120C1527C21700D3BC28 /* DBRestClient+OSX.m in Sources */,
 				D33A120D1527C21700D3BC28 /* DBSession+iOS.m in Sources */,
 				D38B090C15329C2D00BFE072 /* DBKeychain-iOS.m in Sources */,
+				D3ED1B431559F9950023FE9F /* DBConnectController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,6 +6,9 @@ Upgrade instructions
 
 Changes from 1.2.1 to 1.2.2
 - Fixes for building the OS X SDK using Xcode3 and on older versions of OS X
+- iOS authentication now happens inside an embedded web view if the
+  Dropbox app is not installed. QuartzCore is also now a required framework on
+  iOS, so you'll need to add it if you don't have it yet.
 
 Changes from 1.2 to 1.2.1
 - Made DropboxOSX.framework compatible with 32-bit apps
