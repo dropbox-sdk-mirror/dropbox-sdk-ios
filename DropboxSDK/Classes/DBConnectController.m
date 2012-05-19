@@ -21,6 +21,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 - (void)loadRequest;
 - (void)dismiss;
 
+@property (nonatomic, retain) UIAlertView *alertView;
 @property (nonatomic, assign) BOOL hasLoaded;
 @property (nonatomic, retain) NSURL *url;
 @property (nonatomic, retain) UIWebView *webView;
@@ -29,6 +30,15 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 
 
 @implementation DBConnectController
+
+@synthesize alertView;
+
+- (void)setAlertView:(UIAlertView *)pAlertView {
+    if (pAlertView == alertView) return;
+    alertView.delegate = nil;
+    [alertView release];
+    alertView = pAlertView;
+}
 
 @synthesize hasLoaded;
 @synthesize url;
@@ -46,12 +56,13 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 }
 
 - (void)dealloc {
+    alertView.delegate = nil;
+    [alertView release];
     [url release];
     if (webView.isLoading) {
-        [dbNetworkRequestDelegate networkRequestStopped];
         [webView stopLoading];
-        webView.delegate = nil;
     }
+    webView.delegate = nil;
     [webView release];
     [super dealloc];
 }
@@ -63,9 +74,12 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 
     UIActivityIndicatorView *activityIndicator =
         [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
-    activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    CGRect frame = self.view.bounds;
-    frame.origin.y = -20;
+    activityIndicator.autoresizingMask =
+        UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
+        UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    CGRect frame = activityIndicator.frame;
+    frame.origin.x = floorf(self.view.bounds.size.width/2 - frame.size.width/2);
+    frame.origin.y = floorf(self.view.bounds.size.height/2 - frame.size.height/2) - 20;
     activityIndicator.frame = frame;
     [activityIndicator startAnimating];
     [self.view addSubview:activityIndicator];
@@ -82,6 +96,10 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+    if ([webView isLoading]) {
+        [webView stopLoading];
+    }
+    webView.delegate = nil;
     [webView release];
     webView = nil;
 }
@@ -116,8 +134,11 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    // ignore "Fame Load Interrupted" errors
+    [dbNetworkRequestDelegate networkRequestStopped];
+
+    // ignore "Fame Load Interrupted" errors and cancels
     if (error.code == 102 && [error.domain isEqual:@"WebKitErrorDomain"]) return;
+    if (error.code == NSURLErrorCancelled && [error.domain isEqual:NSURLErrorDomain]) return;
 
     NSString *title = @"";
     NSString *message = @"";
@@ -138,21 +159,20 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
         // If it has loaded, it means it's a form submit, so users can cancel/retry on their own
         NSString *okStr = NSLocalizedString(@"OK", nil);
 
-        [[[[UIAlertView alloc]
-           initWithTitle:title message:message delegate:nil cancelButtonTitle:okStr otherButtonTitles:nil]
-          autorelease]
-         show];
+        self.alertView =
+            [[UIAlertView alloc]
+             initWithTitle:title message:message delegate:nil cancelButtonTitle:okStr otherButtonTitles:nil];
     } else {
         // if the page hasn't loaded, this alert gives the user a way to retry
         NSString *retryStr = NSLocalizedString(@"Retry", @"Retry loading a page that has failed to load");
 
-        [[[[UIAlertView alloc]
-           initWithTitle:title message:message delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:retryStr, nil]
-          autorelease]
-         show];
+        self.alertView =
+            [[UIAlertView alloc]
+             initWithTitle:title message:message delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+             otherButtonTitles:retryStr, nil];
     }
 
-    [dbNetworkRequestDelegate networkRequestStopped];
+    [self.alertView show];
 }
 
 - (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
@@ -191,8 +211,8 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 
 #pragma mark UIAlertView methods
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex != alertView.cancelButtonIndex) {
+- (void)alertView:(UIAlertView *)pAlertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != pAlertView.cancelButtonIndex) {
         [self loadRequest];
     } else {
         if ([self.navigationController.viewControllers count] > 1) {
@@ -201,6 +221,8 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
             [self dismiss];
         }
     }
+
+    self.alertView = nil;
 }
 
 
@@ -213,9 +235,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 
 - (void)dismiss {
     if ([webView isLoading]) {
-        [dbNetworkRequestDelegate networkRequestStopped];
         [webView stopLoading];
-        webView.delegate = nil;
     }
     [self.navigationController dismissModalViewControllerAnimated:YES];
 }

@@ -30,4 +30,34 @@
     [super dealloc];
 }
 
+- (BOOL)isEqualToDeltaEntry:(DBDeltaEntry *)entry {
+    if (self == entry) return YES;
+    return
+        (lowercasePath == entry.lowercasePath || [lowercasePath isEqual:entry.lowercasePath]) &&
+        (metadata == entry.metadata || [metadata isEqual:entry.metadata]);
+}
+
+- (BOOL)isEqual:(id)other {
+    if (other == self) return YES;
+    if (!other || ![other isKindOfClass:[self class]]) return NO;
+    return [self isEqualToDeltaEntry:other];
+}
+
+
+#pragma mark NSCoding methods
+
+- (id)initWithCoder:(NSCoder*)coder {
+    if ((self = [super init])) {
+        lowercasePath = [[coder decodeObjectForKey:@"lowercasePath"] retain];
+        metadata = [[coder decodeObjectForKey:@"metadata"] retain];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder*)coder {
+    [coder encodeObject:lowercasePath forKey:@"lowercasePath"];
+    [coder encodeObject:metadata forKey:@"metadata"];
+}
+
+
 @end
