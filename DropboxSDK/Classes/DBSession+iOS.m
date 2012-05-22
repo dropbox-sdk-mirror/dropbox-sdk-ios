@@ -83,7 +83,7 @@ static NSString *kDBProtocolDropbox = @"dbapi-1";
         urlStr = [NSString stringWithFormat:@"%@?k=%@&s=%@%@", dbURL, consumerKey, secret, userIdStr];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlStr]];
     } else {
-        urlStr = [NSString stringWithFormat:@"%@://%@/%@/connect_login?k=%@&s=%@&%@",
+        urlStr = [NSString stringWithFormat:@"%@://%@/%@/connect_login?k=%@&s=%@&easl=1%@",
                   kDBProtocolHTTPS, kDBDropboxWebHost, kDBDropboxAPIVersion, consumerKey, secret, userIdStr];
         UIViewController *connectController = [[[DBConnectController alloc] initWithUrl:[NSURL URLWithString:urlStr]] autorelease];
         UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:connectController] autorelease];

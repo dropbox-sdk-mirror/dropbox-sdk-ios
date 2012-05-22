@@ -10,8 +10,11 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "DBLog.h"
 #import "DBRequest.h"
 #import "DBSession+iOS.h"
+
+#include "TargetConditionals.h"
 
 
 extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
@@ -20,6 +23,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 
 - (void)loadRequest;
 - (void)dismiss;
+- (void)dismissAnimated:(BOOL)animated;
 
 @property (nonatomic, retain) UIAlertView *alertView;
 @property (nonatomic, assign) BOOL hasLoaded;
@@ -140,6 +144,8 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
     if (error.code == 102 && [error.domain isEqual:@"WebKitErrorDomain"]) return;
     if (error.code == NSURLErrorCancelled && [error.domain isEqual:NSURLErrorDomain]) return;
 
+    DBLogWarning(@"DropboxSDK: error loading DBConnectController - %@", error);
+
     NSString *title = @"";
     NSString *message = @"";
 
@@ -190,6 +196,14 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
         }
         [self dismiss];
         return NO;
+    } else if ([[[request URL] scheme] isEqual:@"itms-apps"]) {
+#if TARGET_IPHONE_SIMULATOR
+        DBLogError(@"DropboxSDK - Can't open on simulator. Run on an iOS device to test this functionality");
+#else
+        [[UIApplication sharedApplication] openURL:[request URL]];
+        [self dismissAnimated:NO];
+#endif
+        return NO;
     } else if (![[[request URL] pathComponents] isEqual:[self.url pathComponents]]) {
         DBConnectController *childController = [[[DBConnectController alloc] initWithUrl:[request URL]] autorelease];
 
@@ -233,11 +247,15 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
     [self.webView loadRequest:urlRequest];
 }
 
-- (void)dismiss {
+- (void)dismissAnimated:(BOOL)animated {
     if ([webView isLoading]) {
         [webView stopLoading];
     }
-    [self.navigationController dismissModalViewControllerAnimated:YES];
+    [self.navigationController dismissModalViewControllerAnimated:animated];
+}
+
+- (void)dismiss {
+    [self dismissAnimated:YES];
 }
 
 @end
