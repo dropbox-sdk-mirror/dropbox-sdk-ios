@@ -40,7 +40,7 @@
 	[inRequest addParameters:[inCredentials oauthParameters]];
 	NSURLRequest *urlRequest = [inRequest urlRequestSignedWithSecret:[inCredentials signingKey] usingMethod:[inCredentials signatureMethod]];
 	if ((self = [super initWithRequest:urlRequest delegate:inDelegate])) {
-		_credentials = [inCredentials retain];
+		_credentials = (MPOAuthCredentialConcreteStore *)[inCredentials retain];
 	}
 	return self;
 }

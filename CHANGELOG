@@ -4,6 +4,10 @@ Upgrade instructions
 3. Follow the installation instructions from the README to install the
    newest version of the SDK
 
+Changes from 1.2.2 to 1.2.3
+- Cancelling from the embedded login flow on iOS now correctly sends a cancel
+  url to the app delegate.
+
 Changes from 1.2.1 to 1.2.2
 - Fixes for building the OS X SDK using Xcode3 and on older versions of OS X
 - iOS authentication now happens inside an embedded web view if the
