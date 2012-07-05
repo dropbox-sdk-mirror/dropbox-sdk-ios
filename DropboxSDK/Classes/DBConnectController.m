@@ -42,7 +42,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
     if (pAlertView == alertView) return;
     alertView.delegate = nil;
     [alertView release];
-    alertView = pAlertView;
+    alertView = [pAlertView retain];
 }
 
 @synthesize hasLoaded;
@@ -55,7 +55,9 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 
         self.title = @"Dropbox";
         self.navigationItem.rightBarButtonItem =
-            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+            [[[UIBarButtonItem alloc]
+              initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)]
+             autorelease];
     }
     return self;
 }
@@ -94,6 +96,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
     self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.webView.scalesPageToFit = YES;
     self.webView.hidden = YES;
+    self.webView.dataDetectorTypes = UIDataDetectorTypeNone;
     [self.view addSubview:self.webView];
 
     [self loadRequest];
@@ -167,16 +170,18 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
         NSString *okStr = NSLocalizedString(@"OK", nil);
 
         self.alertView =
-            [[UIAlertView alloc]
-             initWithTitle:title message:message delegate:nil cancelButtonTitle:okStr otherButtonTitles:nil];
+            [[[UIAlertView alloc]
+              initWithTitle:title message:message delegate:nil cancelButtonTitle:okStr otherButtonTitles:nil]
+             autorelease];
     } else {
         // if the page hasn't loaded, this alert gives the user a way to retry
         NSString *retryStr = NSLocalizedString(@"Retry", @"Retry loading a page that has failed to load");
 
         self.alertView =
-            [[UIAlertView alloc]
-             initWithTitle:title message:message delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-             otherButtonTitles:retryStr, nil];
+            [[[UIAlertView alloc]
+              initWithTitle:title message:message delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+              otherButtonTitles:retryStr, nil]
+             autorelease];
     }
 
     [self.alertView show];
@@ -260,7 +265,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 }
 
 - (void)cancel {
-	[self cancelAnimated:YES];
+    [self cancelAnimated:YES];
 }
 
 - (void)dismissAnimated:(BOOL)animated {
