@@ -39,7 +39,7 @@ static NSDictionary *kDBKeychainDict;
 		return [NSKeyedUnarchiver unarchiveObjectWithData:foundValue];
 	} else {
 		if (status != errSecItemNotFound) {
-			DBLogWarning(@"DropboxSDK: error reading stored credentails (%d)", status);
+			DBLogWarning(@"DropboxSDK: error reading stored credentials (%d)", status);
 		}
 		return nil;
 	}
@@ -66,7 +66,7 @@ static NSDictionary *kDBKeychainDict;
 	}
 
 	if (status != noErr) {
-		DBLogWarning(@"DropboxSDK: error saving credentails (%d)", status);
+		DBLogWarning(@"DropboxSDK: error saving credentials (%d)", status);
 	}
 }
 

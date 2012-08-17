@@ -85,7 +85,7 @@ static NSString *kDBProtocolDropbox = @"dbapi-1";
     } else {
         urlStr = [NSString stringWithFormat:@"%@://%@/%@/connect_login?k=%@&s=%@&easl=1%@",
                   kDBProtocolHTTPS, kDBDropboxWebHost, kDBDropboxAPIVersion, consumerKey, secret, userIdStr];
-        UIViewController *connectController = [[[DBConnectController alloc] initWithUrl:[NSURL URLWithString:urlStr]] autorelease];
+        UIViewController *connectController = [[[DBConnectController alloc] initWithUrl:[NSURL URLWithString:urlStr] fromController:rootController] autorelease];
         UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:connectController] autorelease];
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             connectController.modalPresentationStyle = UIModalPresentationFormSheet;

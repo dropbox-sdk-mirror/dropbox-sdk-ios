@@ -180,7 +180,7 @@ extern NSString * const MPOAuthCredentialSessionHandleKey;
 	NSString *consumerSecret = [[self consumerSecret] stringByAddingURIPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 	NSString *tokenSecret = [[self tokenSecret] stringByAddingURIPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 	
-	return [NSString stringWithFormat:@"%@%&%@", consumerSecret, tokenSecret];
+	return [NSString stringWithFormat:@"%@&%@", consumerSecret, tokenSecret];
 }
 
 #pragma mark -

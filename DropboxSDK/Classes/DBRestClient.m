@@ -42,6 +42,13 @@
 @end
 
 
+@interface DBMetadata ()
+
++ (NSDateFormatter *)dateFormatter;
+
+@end
+
+
 @implementation DBRestClient
 
 - (id)initWithSession:(DBSession*)aSession userId:(NSString *)theUserId {
@@ -530,10 +537,19 @@ params:(NSDictionary *)params
         [NSString stringWithFormat:@"%@://%@/%@/files_put/%@%@", 
                 kDBProtocolHTTPS, kDBDropboxAPIContentHost, kDBDropboxAPIVersion, root, 
                 [DBRestClient escapePath:destPath]];
-    
-    NSArray *extraParams = [MPURLRequestParameter parametersFromDictionary:params];
+
+#ifdef TARGET_OS_MAC
+    // Set appropriate parameters to disable notification of updates.
+    NSMutableDictionary * mutableParams = [[params mutableCopy] autorelease];
+    [mutableParams setObject:@"1" forKey:@"mute"];
+    NSArray *extraParams = [MPURLRequestParameter parametersFromDictionary:mutableParams];
     NSArray *paramList =
         [[self.credentialStore oauthParameters] arrayByAddingObjectsFromArray:extraParams];
+#else
+    NSArray *paramList =
+        [[self.credentialStore oauthParameters] arrayByAddingObjectsFromArray:params];
+#endif
+
     NSString *sig = [self signatureForParams:paramList url:[NSURL URLWithString:urlString]];
     NSMutableURLRequest *urlRequest = [self requestForParams:paramList urlString:urlString signature:sig];
     
@@ -542,7 +558,7 @@ params:(NSDictionary *)params
     [urlRequest addValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
     
     [urlRequest setHTTPBodyStream:[NSInputStream inputStreamWithFileAtPath:sourcePath]];
-    
+
     DBRequest *request = 
         [[[DBRequest alloc] 
           initWithURLRequest:urlRequest andInformTarget:self selector:@selector(requestDidUploadFile:)]
@@ -611,6 +627,122 @@ params:(NSDictionary *)params
         [request cancel];
         [uploadRequests removeObjectForKey:path];
     }
+}
+
+- (void)uploadFileChunk:(NSString *)uploadId offset:(unsigned long long)offset fromPath:(NSString *)localPath {
+
+	NSFileHandle *file = [NSFileHandle fileHandleForReadingAtPath:localPath];
+	if (!file) {
+		if ([delegate respondsToSelector:@selector(restClient:uploadFileChunkFailedWithError:)]) {
+			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+									  localPath, @"fromPath",
+									  [NSNumber numberWithLongLong:offset], @"offset",
+									  uploadId, @"upload_id", nil];
+			NSError *error = [NSError errorWithDomain:DBErrorDomain code:DBErrorFileNotFound userInfo:userInfo];
+			[delegate restClient:self uploadFileChunkFailedWithError:error];
+		} else {
+			DBLogWarning(@"DropboxSDK: unable to read file in -[DBRestClient uploadFileChunk:offset:fromPath:] (fromPath=%@)", localPath);
+		}
+		return;
+	}
+	[file seekToFileOffset:offset];
+	NSData *data = [file readDataOfLength:2*1024*1024];
+
+	if (![data length]) {
+		DBLogWarning(@"DropboxSDK: did not read any data from file (fromPath=%@)", localPath);
+	}
+
+	NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+							[NSString stringWithFormat:@"%qu", offset], @"offset",
+							uploadId, @"upload_id",
+							nil];
+
+	NSString *urlStr = [NSString stringWithFormat:@"%@://%@/%@/chunked_upload",
+						kDBProtocolHTTPS, kDBDropboxAPIContentHost, kDBDropboxAPIVersion];
+	NSArray *paramList = [[self.credentialStore oauthParameters]
+						   arrayByAddingObjectsFromArray:[MPURLRequestParameter parametersFromDictionary:params]];
+	NSString *sig = [self signatureForParams:paramList url:[NSURL URLWithString:urlStr]];
+	NSMutableURLRequest *urlRequest = [self requestForParams:paramList urlString:urlStr signature:sig];
+
+	NSString *contentLength = [NSString stringWithFormat:@"%qu", [data length]];
+	[urlRequest addValue:contentLength forHTTPHeaderField:@"Content-Length"];
+	[urlRequest addValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
+	[urlRequest setHTTPBody:data];
+
+	DBRequest *request =
+		[[[DBRequest alloc]
+		  initWithURLRequest:urlRequest andInformTarget:self selector:@selector(requestDidUploadChunk:)]
+		 autorelease];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+							  [NSNumber numberWithLongLong:offset], @"offset",
+							  localPath, @"fromPath",
+							  uploadId, @"upload_id", nil];
+	request.userInfo = userInfo;
+	[requests addObject:request];
+}
+
+- (void)requestDidUploadChunk:(DBRequest *)request {
+	NSDictionary *resp = [request parseResponseAsType:[NSDictionary class]];
+
+	if (!resp) {
+		if ([delegate respondsToSelector:@selector(restClient:uploadFileChunkFailedWithError:)]) {
+			[delegate restClient:self uploadFileChunkFailedWithError:request.error];
+		}
+	} else {
+		NSString *uploadId = [resp objectForKey:@"upload_id"];
+		unsigned long long newOffset = [[resp objectForKey:@"offset"] longLongValue];
+		NSString *localPath = [request.userInfo objectForKey:@"fromPath"];
+		NSDateFormatter *dateFormatter = [DBMetadata dateFormatter];
+		NSDate *expires = [dateFormatter dateFromString:[resp objectForKey:@"expires"]];
+		if ([delegate respondsToSelector:@selector(restClient:uploadedFileChunk:newOffset:fromFile:expires:)]) {
+			[delegate restClient:self uploadedFileChunk:uploadId newOffset:newOffset fromFile:localPath expires:expires];
+		}
+	}
+}
+
+
+- (void)uploadFile:(NSString *)filename toPath:(NSString *)parentFolder withParentRev:(NSString *)parentRev
+	fromUploadId:(NSString *)uploadId {
+
+	NSMutableDictionary *params = [NSDictionary dictionaryWithObject:uploadId forKey:@"upload_id"];
+	if (parentRev) {
+		[params setObject:parentRev forKey:@"parent_rev"];
+	}
+
+	if (![parentFolder hasSuffix:@"/"]) {
+		parentFolder = [NSString stringWithFormat:@"%@/", parentFolder];
+	}
+	NSString *destPath = [NSString stringWithFormat:@"%@%@", parentFolder, filename];
+	NSString *urlPath = [NSString stringWithFormat:@"/commit_chunked_upload/%@%@", root, [DBRestClient escapePath:destPath]];
+	NSURLRequest *urlRequest = [self requestWithHost:kDBDropboxAPIContentHost path:urlPath parameters:params method:@"POST"];
+
+	DBRequest *request = [[[DBRequest alloc]
+						   initWithURLRequest:urlRequest andInformTarget:self selector:@selector(requestDidUploadFromUploadId:)]
+						  autorelease];
+	request.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+						uploadId, @"uploadId",
+						destPath, @"destPath",
+						parentRev, @"parentRev",
+						nil];
+	[requests addObject:request];
+}
+
+- (void)requestDidUploadFromUploadId:(DBRequest *)request {
+	NSDictionary *resp = [request parseResponseAsType:[NSDictionary class]];
+
+	if (!resp) {
+		if ([delegate respondsToSelector:@selector(restClient:uploadFromUploadIdFailedWithError:)]) {
+			[delegate restClient:self uploadFromUploadIdFailedWithError:request.error];
+		}
+	} else {
+		NSString *destPath = [request.userInfo objectForKey:@"destPath"];
+		NSString *uploadId = [request.userInfo objectForKey:@"uploadId"];
+		DBMetadata *metadata = [[[DBMetadata alloc] initWithDictionary:resp] autorelease];
+
+		if ([delegate respondsToSelector:@selector(restClient:uploadedFile:fromUploadId:metadata:)]) {
+			[delegate restClient:self uploadedFile:destPath fromUploadId:uploadId metadata:metadata];
+		}
+	}
 }
 
 
@@ -1005,11 +1137,18 @@ params:(NSDictionary *)params
 }
 
 
-- (void)loadSharableLinkForFile:(NSString*)path {
+- (void)loadSharableLinkForFile:(NSString *)path {
+	[self loadSharableLinkForFile:path shortUrl:YES];
+}
+
+- (void)loadSharableLinkForFile:(NSString*)path shortUrl:(BOOL)createShortUrl {
     NSString* fullPath = [NSString stringWithFormat:@"/shares/%@%@", root, path];
 
-    NSURLRequest* urlRequest = 
-        [self requestWithHost:kDBDropboxAPIHost path:fullPath parameters:nil];
+	NSString *shortUrlVal = createShortUrl ? @"true" : @"false";
+	NSDictionary *params = [NSDictionary dictionaryWithObject:shortUrlVal forKey:@"short_url"];
+
+    NSURLRequest* urlRequest =
+        [self requestWithHost:kDBDropboxAPIHost path:fullPath parameters:params];
 
     DBRequest* request =
         [[[DBRequest alloc]

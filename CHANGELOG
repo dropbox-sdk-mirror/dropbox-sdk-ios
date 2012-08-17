@@ -4,6 +4,15 @@ Upgrade instructions
 3. Follow the installation instructions from the README to install the
    newest version of the SDK
 
+Changed from 1.2.3 to 1.3
+- The SDK now supports uploading large files using
+  -[DBRestClient uploadFileChunk:offset:fromPath:] and
+  -[DBRestClient uploadFile:toPath:withParentRev:fromUploadId:]. See
+  the developers site and DBRestClient.h for more information on using them.
+- There is a new method, -[DBRestClient loadSharableLinkForFile:shortUrl], that
+  allows you to create links that are not shortened with the db.tt url
+  shortener.
+
 Changes from 1.2.2 to 1.2.3
 - Cancelling from the embedded login flow on iOS now correctly sends a cancel
   url to the app delegate.

@@ -26,6 +26,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 - (void)dismiss;
 - (void)dismissAnimated:(BOOL)animated;
 
+@property (nonatomic, assign) UIViewController *rootController;
 @property (nonatomic, retain) UIAlertView *alertView;
 @property (nonatomic, assign) BOOL hasLoaded;
 @property (nonatomic, retain) NSURL *url;
@@ -45,13 +46,15 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
     alertView = [pAlertView retain];
 }
 
+@synthesize rootController;
 @synthesize hasLoaded;
 @synthesize url;
 @synthesize webView;
 
-- (id)initWithUrl:(NSURL *)connectUrl {
+- (id)initWithUrl:(NSURL *)connectUrl fromController:(UIViewController *)rootController {
     if ((self = [super init])) {
         self.url = connectUrl;
+        self.rootController = rootController;
 
         self.title = @"Dropbox";
         self.navigationItem.rightBarButtonItem =
@@ -114,7 +117,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ||
-            interfaceOrientation == UIInterfaceOrientationPortrait;
+            [self.rootController shouldAutorotateToInterfaceOrientation:interfaceOrientation]; // Delegate to presenting view.
 }
 
 
@@ -204,7 +207,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 #endif
         return NO;
     } else if (![[[request URL] pathComponents] isEqual:[self.url pathComponents]]) {
-        DBConnectController *childController = [[[DBConnectController alloc] initWithUrl:[request URL]] autorelease];
+        DBConnectController *childController = [[[DBConnectController alloc] initWithUrl:[request URL] fromController:self.rootController] autorelease];
 
         NSDictionary *queryParams = [DBSession parseURLParams:[[request URL] query]];
         NSString *title = [queryParams objectForKey:@"embed_title"];

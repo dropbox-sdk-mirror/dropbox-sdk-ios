@@ -8,6 +8,6 @@
 
 @interface DBConnectController : UIViewController
 
-- (id)initWithUrl:(NSURL *)url;
+- (id)initWithUrl:(NSURL *)connectUrl fromController:(UIViewController *)rootController;
 
 @end
