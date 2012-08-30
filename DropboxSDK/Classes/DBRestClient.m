@@ -538,17 +538,16 @@ params:(NSDictionary *)params
                 kDBProtocolHTTPS, kDBDropboxAPIContentHost, kDBDropboxAPIVersion, root, 
                 [DBRestClient escapePath:destPath]];
 
-#ifdef TARGET_OS_MAC
+#if !TARGET_OS_IPHONE
     // Set appropriate parameters to disable notification of updates.
     NSMutableDictionary * mutableParams = [[params mutableCopy] autorelease];
     [mutableParams setObject:@"1" forKey:@"mute"];
-    NSArray *extraParams = [MPURLRequestParameter parametersFromDictionary:mutableParams];
-    NSArray *paramList =
-        [[self.credentialStore oauthParameters] arrayByAddingObjectsFromArray:extraParams];
-#else
-    NSArray *paramList =
-        [[self.credentialStore oauthParameters] arrayByAddingObjectsFromArray:params];
+	params = mutableParams;
 #endif
+
+	NSArray *paramList =
+		[[self.credentialStore oauthParameters]
+		 arrayByAddingObjectsFromArray:[MPURLRequestParameter parametersFromDictionary:params]];
 
     NSString *sig = [self signatureForParams:paramList url:[NSURL URLWithString:urlString]];
     NSMutableURLRequest *urlRequest = [self requestForParams:paramList urlString:urlString signature:sig];
@@ -704,16 +703,22 @@ params:(NSDictionary *)params
 - (void)uploadFile:(NSString *)filename toPath:(NSString *)parentFolder withParentRev:(NSString *)parentRev
 	fromUploadId:(NSString *)uploadId {
 
-	NSMutableDictionary *params = [NSDictionary dictionaryWithObject:uploadId forKey:@"upload_id"];
+	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								   uploadId, @"upload_id",
+								   @"false", @"overwrite", nil];
 	if (parentRev) {
 		[params setObject:parentRev forKey:@"parent_rev"];
 	}
+
+#if !TARGET_OS_IPHONE
+	[params setObject:@"1" forKey:@"mute"];
+#endif
 
 	if (![parentFolder hasSuffix:@"/"]) {
 		parentFolder = [NSString stringWithFormat:@"%@/", parentFolder];
 	}
 	NSString *destPath = [NSString stringWithFormat:@"%@%@", parentFolder, filename];
-	NSString *urlPath = [NSString stringWithFormat:@"/commit_chunked_upload/%@%@", root, [DBRestClient escapePath:destPath]];
+	NSString *urlPath = [NSString stringWithFormat:@"/commit_chunked_upload/%@%@", root, destPath];
 	NSURLRequest *urlRequest = [self requestWithHost:kDBDropboxAPIContentHost path:urlPath parameters:params method:@"POST"];
 
 	DBRequest *request = [[[DBRequest alloc]

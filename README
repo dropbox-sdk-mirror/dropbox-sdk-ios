@@ -7,6 +7,8 @@ Requirements:
    http://www.dropbox.com/developers/apps. You should have an app key and 
    secret.
 
+Note: The SDK is designed to work with iOS versions 3.2 and above.
+
 
 Building and using the example app:
 1. Open the project file in examples/DBRoulette/DBRoulette.xcodeproj

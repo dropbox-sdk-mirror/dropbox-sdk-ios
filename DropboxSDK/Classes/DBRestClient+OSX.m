@@ -119,7 +119,7 @@
 - (void)requestDidLoadAccessToken:(DBRequest *)request {
     id<DBRestClientOSXDelegate> delegateExt = (id<DBRestClientOSXDelegate>)delegate;
     if (request.error) {
-        if (request.statusCode == 403) {
+        if (request.statusCode == 401 || request.statusCode == 403) {
             // request token probably no longer valid, clear it out to make sure we fetch another one
             self.credentialStore.requestToken = nil;
             self.credentialStore.requestTokenSecret = nil;
