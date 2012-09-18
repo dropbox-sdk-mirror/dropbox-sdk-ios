@@ -22,7 +22,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
 @interface DBConnectController () <UIWebViewDelegate, UIAlertViewDelegate>
 
 - (void)loadRequest;
-- (void)openUrl:(NSURL *)url;
+- (BOOL)openUrl:(NSURL *)url;
 - (void)dismiss;
 - (void)dismissAnimated:(BOOL)animated;
 - (void)cancelAnimated:(BOOL)animated;
@@ -211,7 +211,11 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
     NSString *appScheme = [self.session appScheme];
     if ([[[request URL] scheme] isEqual:appScheme]) {
 
-        [self openUrl:[request URL]];
+        BOOL success = [self openUrl:[request URL]];
+		if (success && ![self.session isLinked]) {
+			DBLogError(@"DropboxSDK: credentials not saved. Make sure you call -[DBSession handleOpenUrl:] in your app delegate's application:openURL:sourceApplication:annotation: method");
+		}
+
         [self dismiss];
         return NO;
     } else if ([[[request URL] scheme] isEqual:@"itms-apps"]) {
@@ -266,7 +270,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
     [self.webView loadRequest:urlRequest];
 }
 
-- (void)openUrl:(NSURL *)openUrl {
+- (BOOL)openUrl:(NSURL *)openUrl {
     UIApplication *app = [UIApplication sharedApplication];
     id<UIApplicationDelegate> delegate = app.delegate;
 
@@ -274,7 +278,12 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
         [delegate application:app openURL:openUrl sourceApplication:@"com.getdropbox.Dropbox" annotation:nil];
     } else if ([delegate respondsToSelector:@selector(application:handleOpenURL:)]) {
         [delegate application:app handleOpenURL:openUrl];
-    }
+    } else {
+		DBLogError(@"DropboxSDK: app delegate does not implement application:openURL:sourceApplication:annotation:");
+		return NO;
+	}
+
+	return YES;
 }
 
 - (void)cancelAnimated:(BOOL)animated {

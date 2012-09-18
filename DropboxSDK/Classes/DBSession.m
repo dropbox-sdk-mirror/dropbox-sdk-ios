@@ -13,7 +13,7 @@
 #import "MPOAuthCredentialConcreteStore.h"
 #import "MPOAuthSignatureParameter.h"
 
-NSString *kDBSDKVersion = @"1.3.1"; // TODO: parameterize from build system
+NSString *kDBSDKVersion = @"1.3.2"; // TODO: parameterize from build system
 
 NSString *kDBDropboxAPIHost = @"api.dropbox.com";
 NSString *kDBDropboxAPIContentHost = @"api-content.dropbox.com";
