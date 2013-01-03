@@ -83,8 +83,8 @@
 	NSString *domain = [self host];
 	matches = [domain isIPAddress] && [domain isEqualToString:inString];
 	
-	int domainLength = [domain length];
-	int requestedDomainLength = [inString length];
+	NSUInteger domainLength = [domain length];
+	NSUInteger requestedDomainLength = [inString length];
 	
 	if (!matches) {
 		if (domainLength > requestedDomainLength) {

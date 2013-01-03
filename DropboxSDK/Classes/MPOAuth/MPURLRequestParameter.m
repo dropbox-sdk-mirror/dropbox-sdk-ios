@@ -83,8 +83,8 @@
 
 + (NSString *)parameterStringForParameters:(NSArray *)inParameters {
 	NSMutableString *queryString = [[NSMutableString alloc] init];
-	int i = 0;
-	int parameterCount = [inParameters count];	
+	NSUInteger i = 0;
+	NSUInteger parameterCount = [inParameters count];
 	MPURLRequestParameter *aParameter = nil;
 	
 	for (; i < parameterCount; i++) {

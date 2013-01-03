@@ -19,6 +19,8 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
 
 - (void)setError:(NSError *)error;
 
+@property (nonatomic, retain) NSFileManager *fileManager;
+
 @end
 
 
@@ -34,6 +36,7 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
         target = aTarget;
         selector = aSelector;
         
+        fileManager = [NSFileManager new];
         urlConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
         [dbNetworkRequestDelegate networkRequestStarted];
     }
@@ -46,6 +49,7 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
     [request release];
     [urlConnection release];
     [fileHandle release];
+    [fileManager release];
     [userInfo release];
     [response release];
     [xDropboxMetadataJSON release];
@@ -57,6 +61,7 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
 }
 
 @synthesize failureSelector;
+@synthesize fileManager;
 @synthesize downloadProgressSelector;
 @synthesize uploadProgressSelector;
 @synthesize userInfo;
@@ -106,7 +111,7 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
     if (tempFilename) {
         [fileHandle closeFile];
         NSError* rmError;
-        if (![[NSFileManager defaultManager] removeItemAtPath:tempFilename error:&rmError]) {
+        if (![fileManager removeItemAtPath:tempFilename error:&rmError]) {
             DBLogError(@"DBRequest#cancel Error removing temp file: %@", rmError);
         }
     }
@@ -135,15 +140,13 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
     if (resultFilename && [self statusCode] == 200) {
         // Create the file here so it's created in case it's zero length
         // File is downloaded into a temporary file and then moved over when completed successfully
-        NSString* filename = 
-            [NSString stringWithFormat:@"%.0f", 1000*[NSDate timeIntervalSinceReferenceDate]];
+        NSString* filename = [[NSProcessInfo processInfo] globallyUniqueString];
         tempFilename = [[NSTemporaryDirectory() stringByAppendingPathComponent:filename] retain];
         
-        NSFileManager* fileManager = [[NSFileManager new] autorelease];
         BOOL success = [fileManager createFileAtPath:tempFilename contents:nil attributes:nil];
         if (!success) {
-            DBLogError(@"DBRequest#connection:didReceiveData: Error creating file at path: %@", 
-                       tempFilename);
+            DBLogError(@"DBRequest#connection:didReceiveData: Error creating temp file: (%d) %s",
+                       errno, strerror(errno));
         }
 
         fileHandle = [[NSFileHandle fileHandleForWritingAtPath:tempFilename] retain];
@@ -158,7 +161,7 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
             // In case we run out of disk space
             [urlConnection cancel];
             [fileHandle closeFile];
-            [[NSFileManager defaultManager] removeItemAtPath:tempFilename error:nil];
+            [fileManager removeItemAtPath:tempFilename error:nil];
             [self setError:[NSError errorWithDomain:DBErrorDomain code:DBErrorInsufficientDiskSpace userInfo:userInfo]];
             
             SEL sel = failureSelector ? failureSelector : selector;
@@ -211,7 +214,6 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
         }
         [self setError:[NSError errorWithDomain:DBErrorDomain code:self.statusCode userInfo:errorUserInfo]];
     } else if (tempFilename) {
-        NSFileManager* fileManager = [[NSFileManager new] autorelease];
         NSError* moveError;
         
         // Check that the file size is the same as the Content-Length
@@ -255,7 +257,6 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
     uploadProgress = 0;
     
     if (tempFilename) {
-        NSFileManager* fileManager = [[NSFileManager new] autorelease];
         NSError* removeError;
         BOOL success = [fileManager removeItemAtPath:tempFilename error:&removeError];
         if (!success) {
@@ -301,7 +302,8 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
 
 	if (!([error.domain isEqual:DBErrorDomain] && error.code == 304)) {
 		// Log errors unless they're 304's
-		DBLogWarning(@"DropboxSDK: error making request to %@ - (%d) %@", [[request URL] path], error.code, errorStr);
+		DBLogWarning(@"DropboxSDK: error making request to %@ - (%ld) %@",
+                       [[request URL] path], (long)error.code, errorStr);
 	}
 }
 

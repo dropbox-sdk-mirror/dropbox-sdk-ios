@@ -93,7 +93,7 @@
 
     NSString *token = self.credentialStore.requestToken;
     NSString *osxProtocol= [NSString stringWithFormat:@"db-%@", self.credentialStore.consumerKey];
-    NSString *urlStr = [NSString stringWithFormat:@"%@://%@/%@/oauth/authorize?oauth_token=%@&osx_protocol=%@",
+    NSString *urlStr = [NSString stringWithFormat:@"%@://%@/%@/oauth/authorize?oauth_token=%@&osx_protocol=%@&embedded=1",
                         kDBProtocolHTTPS, kDBDropboxWebHost, kDBDropboxAPIVersion, token, osxProtocol];
     return [NSURL URLWithString:urlStr];
 }

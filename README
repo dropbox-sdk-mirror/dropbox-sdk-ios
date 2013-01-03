@@ -3,7 +3,7 @@ Getting Started Using the DropboxSDK for iOS:
 Requirements:
 1. You need the 4.2 version of the iPhone SDK. The version of your Xcode should
    be at least 3.2.5.
-2. You need to have registered as a Dropbox application with mobile access at 
+2. You need to have registered as a Dropbox app at
    http://www.dropbox.com/developers/apps. You should have an app key and 
    secret.
 

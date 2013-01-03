@@ -29,14 +29,14 @@
 	}
 	
 	SecKeychainAddInternetPassword(NULL /* default keychain */,
-								   [serverName length], [serverName UTF8String],
-								   [securityDomain length], [securityDomain UTF8String],
-								   [uniqueName length], [uniqueName UTF8String],	/* account name */
+								   (int32_t)[serverName length], [serverName UTF8String],
+								   (int32_t)[securityDomain length], [securityDomain UTF8String],
+								   (int32_t)[uniqueName length], [uniqueName UTF8String],	/* account name */
 								   0, NULL,	/* path */
 								   0,
 								   'oaut'	/* OAuth, not an official OSType code */,
 								   kSecAuthenticationTypeDefault,
-								   [inValue length], [inValue UTF8String],
+								   (int32_t)[inValue length], [inValue UTF8String],
 								   NULL);
 }
 
@@ -55,9 +55,9 @@
 	const char *passwordString = NULL;
 	
 	OSStatus status = SecKeychainFindInternetPassword(NULL	/* default keychain */,
-													  [serverName length], [serverName UTF8String],
-													  [securityDomain length], [securityDomain UTF8String],
-													  [uniqueName length], [uniqueName UTF8String],
+													  (int32_t)[serverName length], [serverName UTF8String],
+													  (int32_t)[securityDomain length], [securityDomain UTF8String],
+													  (int32_t)[uniqueName length], [uniqueName UTF8String],
 													  0, NULL,	/* path */
 													  0,
 													  kSecProtocolTypeAny,

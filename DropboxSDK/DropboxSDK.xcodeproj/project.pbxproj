@@ -29,7 +29,7 @@
 		D36931EC150884E4003FBA23 /* DBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D387584B14135C3E0013E17C /* DBJsonBase.m */; };
 		D36931ED150884E4003FBA23 /* DBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D387584C14135C3E0013E17C /* DBJsonParser.m */; };
 		D36931EE150884E4003FBA23 /* DBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D387584D14135C3E0013E17C /* DBJsonWriter.m */; };
-		D36931EF150884E4003FBA23 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = D387585014135C3E0013E17C /* Base64Transcoder.c */; };
+		D36931EF150884E4003FBA23 /* DBBase64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = D387585014135C3E0013E17C /* DBBase64Transcoder.c */; };
 		D36931F0150884E4003FBA23 /* MPOAuthAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D387585114135C3E0013E17C /* MPOAuthAPI.m */; };
 		D36931F1150884E4003FBA23 /* MPOAuthAPIRequestLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D387585214135C3E0013E17C /* MPOAuthAPIRequestLoader.m */; };
 		D36931F2150884E4003FBA23 /* MPOAuthAuthenticationMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = D387585314135C3E0013E17C /* MPOAuthAuthenticationMethod.m */; };
@@ -48,7 +48,7 @@
 		D36931FF150884E4003FBA23 /* NSDictionary+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D387586014135C3E0013E17C /* NSDictionary+Dropbox.m */; };
 		D3693200150884E4003FBA23 /* NSString+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D387586114135C3E0013E17C /* NSString+Dropbox.m */; };
 		D369320115088508003FBA23 /* DBDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581314135C3E0013E17C /* DBDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D369320215088508003FBA23 /* Base64Transcoder.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581D14135C3E0013E17C /* Base64Transcoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D369320215088508003FBA23 /* DBBase64Transcoder.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581D14135C3E0013E17C /* DBBase64Transcoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D369320315088508003FBA23 /* DBAccountInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581E14135C3E0013E17C /* DBAccountInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D369320415088508003FBA23 /* DBError.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581F14135C3E0013E17C /* DBError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D369320515088508003FBA23 /* DBLog.h in Headers */ = {isa = PBXBuildFile; fileRef = D387582114135C3E0013E17C /* DBLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -97,7 +97,7 @@
 		D387586A14135C3E0013E17C /* DBRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581914135C3E0013E17C /* DBRequest.m */; };
 		D387586B14135C3E0013E17C /* DBRestClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581A14135C3E0013E17C /* DBRestClient.m */; };
 		D387586C14135C3E0013E17C /* DBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581B14135C3E0013E17C /* DBSession.m */; };
-		D387586D14135C3E0013E17C /* Base64Transcoder.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581D14135C3E0013E17C /* Base64Transcoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D387586D14135C3E0013E17C /* DBBase64Transcoder.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581D14135C3E0013E17C /* DBBase64Transcoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D387586E14135C3E0013E17C /* DBAccountInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581E14135C3E0013E17C /* DBAccountInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D387586F14135C3E0013E17C /* DBError.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581F14135C3E0013E17C /* DBError.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D387587114135C3E0013E17C /* DBLog.h in Headers */ = {isa = PBXBuildFile; fileRef = D387582114135C3E0013E17C /* DBLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -141,7 +141,7 @@
 		D387589A14135C3E0013E17C /* DBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D387584B14135C3E0013E17C /* DBJsonBase.m */; };
 		D387589B14135C3E0013E17C /* DBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D387584C14135C3E0013E17C /* DBJsonParser.m */; };
 		D387589C14135C3E0013E17C /* DBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D387584D14135C3E0013E17C /* DBJsonWriter.m */; };
-		D387589D14135C3E0013E17C /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = D387585014135C3E0013E17C /* Base64Transcoder.c */; };
+		D387589D14135C3E0013E17C /* DBBase64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = D387585014135C3E0013E17C /* DBBase64Transcoder.c */; };
 		D387589E14135C3E0013E17C /* MPOAuthAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D387585114135C3E0013E17C /* MPOAuthAPI.m */; };
 		D387589F14135C3E0013E17C /* MPOAuthAPIRequestLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D387585214135C3E0013E17C /* MPOAuthAPIRequestLoader.m */; };
 		D38758A014135C3E0013E17C /* MPOAuthAuthenticationMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = D387585314135C3E0013E17C /* MPOAuthAuthenticationMethod.m */; };
@@ -176,7 +176,7 @@
 		D3933C11145F145E00E15FA7 /* DBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = D387584B14135C3E0013E17C /* DBJsonBase.m */; };
 		D3933C12145F145E00E15FA7 /* DBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D387584C14135C3E0013E17C /* DBJsonParser.m */; };
 		D3933C13145F145E00E15FA7 /* DBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D387584D14135C3E0013E17C /* DBJsonWriter.m */; };
-		D3933C14145F145E00E15FA7 /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = D387585014135C3E0013E17C /* Base64Transcoder.c */; };
+		D3933C14145F145E00E15FA7 /* DBBase64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = D387585014135C3E0013E17C /* DBBase64Transcoder.c */; };
 		D3933C15145F145E00E15FA7 /* MPOAuthAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D387585114135C3E0013E17C /* MPOAuthAPI.m */; };
 		D3933C16145F145E00E15FA7 /* MPOAuthAPIRequestLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D387585214135C3E0013E17C /* MPOAuthAPIRequestLoader.m */; };
 		D3933C17145F145E00E15FA7 /* MPOAuthAuthenticationMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = D387585314135C3E0013E17C /* MPOAuthAuthenticationMethod.m */; };
@@ -232,7 +232,7 @@
 		D387581914135C3E0013E17C /* DBRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBRequest.m; path = ../DBRequest.m; sourceTree = "<group>"; };
 		D387581A14135C3E0013E17C /* DBRestClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBRestClient.m; path = ../DBRestClient.m; sourceTree = "<group>"; };
 		D387581B14135C3E0013E17C /* DBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBSession.m; path = ../DBSession.m; sourceTree = "<group>"; };
-		D387581D14135C3E0013E17C /* Base64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64Transcoder.h; sourceTree = "<group>"; };
+		D387581D14135C3E0013E17C /* DBBase64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBBase64Transcoder.h; sourceTree = "<group>"; };
 		D387581E14135C3E0013E17C /* DBAccountInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBAccountInfo.h; sourceTree = "<group>"; };
 		D387581F14135C3E0013E17C /* DBError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBError.h; sourceTree = "<group>"; };
 		D387582114135C3E0013E17C /* DBLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBLog.h; sourceTree = "<group>"; };
@@ -277,7 +277,7 @@
 		D387584B14135C3E0013E17C /* DBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBJsonBase.m; sourceTree = "<group>"; };
 		D387584C14135C3E0013E17C /* DBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBJsonParser.m; sourceTree = "<group>"; };
 		D387584D14135C3E0013E17C /* DBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBJsonWriter.m; sourceTree = "<group>"; };
-		D387585014135C3E0013E17C /* Base64Transcoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Base64Transcoder.c; sourceTree = "<group>"; };
+		D387585014135C3E0013E17C /* DBBase64Transcoder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DBBase64Transcoder.c; sourceTree = "<group>"; };
 		D387585114135C3E0013E17C /* MPOAuthAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPOAuthAPI.m; sourceTree = "<group>"; };
 		D387585214135C3E0013E17C /* MPOAuthAPIRequestLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPOAuthAPIRequestLoader.m; sourceTree = "<group>"; };
 		D387585314135C3E0013E17C /* MPOAuthAuthenticationMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPOAuthAuthenticationMethod.m; sourceTree = "<group>"; };
@@ -417,7 +417,7 @@
 				D33A120A1527C21700D3BC28 /* DBRestClient+OSX.m */,
 				D387581B14135C3E0013E17C /* DBSession.m */,
 				D33A120B1527C21700D3BC28 /* DBSession+iOS.m */,
-				D387581D14135C3E0013E17C /* Base64Transcoder.h */,
+				D387581D14135C3E0013E17C /* DBBase64Transcoder.h */,
 				D387581E14135C3E0013E17C /* DBAccountInfo.h */,
 				D3F473CB1520D83A0041AA64 /* DBAuthHelperOSX.h */,
 				D387581F14135C3E0013E17C /* DBError.h */,
@@ -504,7 +504,7 @@
 		D387584F14135C3E0013E17C /* Crypto */ = {
 			isa = PBXGroup;
 			children = (
-				D387585014135C3E0013E17C /* Base64Transcoder.c */,
+				D387585014135C3E0013E17C /* DBBase64Transcoder.c */,
 			);
 			path = Crypto;
 			sourceTree = "<group>";
@@ -517,7 +517,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D387586414135C3E0013E17C /* DBDefines.h in Headers */,
-				D387586D14135C3E0013E17C /* Base64Transcoder.h in Headers */,
+				D387586D14135C3E0013E17C /* DBBase64Transcoder.h in Headers */,
 				D387586E14135C3E0013E17C /* DBAccountInfo.h in Headers */,
 				D387586F14135C3E0013E17C /* DBError.h in Headers */,
 				D387587114135C3E0013E17C /* DBLog.h in Headers */,
@@ -567,7 +567,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D369320115088508003FBA23 /* DBDefines.h in Headers */,
-				D369320215088508003FBA23 /* Base64Transcoder.h in Headers */,
+				D369320215088508003FBA23 /* DBBase64Transcoder.h in Headers */,
 				D369320315088508003FBA23 /* DBAccountInfo.h in Headers */,
 				D369320415088508003FBA23 /* DBError.h in Headers */,
 				D369320515088508003FBA23 /* DBLog.h in Headers */,
@@ -742,7 +742,7 @@
 				D387589A14135C3E0013E17C /* DBJsonBase.m in Sources */,
 				D387589B14135C3E0013E17C /* DBJsonParser.m in Sources */,
 				D387589C14135C3E0013E17C /* DBJsonWriter.m in Sources */,
-				D387589D14135C3E0013E17C /* Base64Transcoder.c in Sources */,
+				D387589D14135C3E0013E17C /* DBBase64Transcoder.c in Sources */,
 				D387589E14135C3E0013E17C /* MPOAuthAPI.m in Sources */,
 				D387589F14135C3E0013E17C /* MPOAuthAPIRequestLoader.m in Sources */,
 				D38758A014135C3E0013E17C /* MPOAuthAuthenticationMethod.m in Sources */,
@@ -788,7 +788,7 @@
 				D36931EC150884E4003FBA23 /* DBJsonBase.m in Sources */,
 				D36931ED150884E4003FBA23 /* DBJsonParser.m in Sources */,
 				D36931EE150884E4003FBA23 /* DBJsonWriter.m in Sources */,
-				D36931EF150884E4003FBA23 /* Base64Transcoder.c in Sources */,
+				D36931EF150884E4003FBA23 /* DBBase64Transcoder.c in Sources */,
 				D36931F0150884E4003FBA23 /* MPOAuthAPI.m in Sources */,
 				D36931F1150884E4003FBA23 /* MPOAuthAPIRequestLoader.m in Sources */,
 				D36931F2150884E4003FBA23 /* MPOAuthAuthenticationMethod.m in Sources */,
@@ -831,7 +831,7 @@
 				D3933C11145F145E00E15FA7 /* DBJsonBase.m in Sources */,
 				D3933C12145F145E00E15FA7 /* DBJsonParser.m in Sources */,
 				D3933C13145F145E00E15FA7 /* DBJsonWriter.m in Sources */,
-				D3933C14145F145E00E15FA7 /* Base64Transcoder.c in Sources */,
+				D3933C14145F145E00E15FA7 /* DBBase64Transcoder.c in Sources */,
 				D3933C15145F145E00E15FA7 /* MPOAuthAPI.m in Sources */,
 				D3933C16145F145E00E15FA7 /* MPOAuthAPIRequestLoader.m in Sources */,
 				D3933C17145F145E00E15FA7 /* MPOAuthAuthenticationMethod.m in Sources */,

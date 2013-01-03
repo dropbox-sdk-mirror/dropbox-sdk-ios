@@ -663,7 +663,7 @@ params:(NSDictionary *)params
 	NSString *sig = [self signatureForParams:paramList url:[NSURL URLWithString:urlStr]];
 	NSMutableURLRequest *urlRequest = [self requestForParams:paramList urlString:urlStr signature:sig];
 
-	NSString *contentLength = [NSString stringWithFormat:@"%qu", [data length]];
+	NSString *contentLength = [NSString stringWithFormat:@"%lu", (unsigned long)[data length]];
 	[urlRequest addValue:contentLength forHTTPHeaderField:@"Content-Length"];
 	[urlRequest addValue:@"application/octet-stream" forHTTPHeaderField:@"Content-Type"];
 	[urlRequest setHTTPBody:data];
@@ -697,6 +697,8 @@ params:(NSDictionary *)params
 			[delegate restClient:self uploadedFileChunk:uploadId newOffset:newOffset fromFile:localPath expires:expires];
 		}
 	}
+
+	[requests removeObject:request];
 }
 
 
@@ -748,6 +750,8 @@ params:(NSDictionary *)params
 			[delegate restClient:self uploadedFile:destPath fromUploadId:uploadId metadata:metadata];
 		}
 	}
+
+	[requests removeObject:request];
 }
 
 
@@ -757,7 +761,7 @@ params:(NSDictionary *)params
 
 - (void)loadRevisionsForFile:(NSString *)path limit:(NSInteger)limit {
     NSString *fullPath = [NSString stringWithFormat:@"/revisions/%@%@", root, path];
-    NSString *limitStr = [NSString stringWithFormat:@"%d", limit];
+    NSString *limitStr = [NSString stringWithFormat:@"%ld", (long)limit];
     NSDictionary *params = [NSDictionary dictionaryWithObject:limitStr forKey:@"rev_limit"];
     NSURLRequest* urlRequest = 
         [self requestWithHost:kDBDropboxAPIHost path:fullPath parameters:params];

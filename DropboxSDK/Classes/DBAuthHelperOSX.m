@@ -15,7 +15,7 @@ NSString *DBAuthHelperOSXStateChangedNotification = @"DBAuthHelperOSXStateChange
 
 @interface DBAuthHelperOSX () <DBRestClientOSXDelegate>
 
-- (void)postStateChangedNotification;
+- (void)postStateChangedNotification:(NSError *)error;
 
 @property (nonatomic, readonly) DBRestClient *restClient;
 
@@ -60,7 +60,7 @@ NSString *DBAuthHelperOSXStateChangedNotification = @"DBAuthHelperOSXStateChange
 	}
 
 	loading = YES;
-	[self postStateChangedNotification];
+	[self postStateChangedNotification:nil];
 
 	[self.restClient loadRequestToken];
 }
@@ -70,7 +70,7 @@ NSString *DBAuthHelperOSXStateChangedNotification = @"DBAuthHelperOSXStateChange
 
 - (void)restClientLoadedRequestToken:(DBRestClient *)restClient {
     loading = NO;
-	[self postStateChangedNotification];
+	[self postStateChangedNotification:nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:NSApplicationDidBecomeActiveNotification object:nil];
 
@@ -83,7 +83,7 @@ NSString *DBAuthHelperOSXStateChangedNotification = @"DBAuthHelperOSXStateChange
 	if (![self.restClient requestTokenLoaded]) {
 		[[NSNotificationCenter defaultCenter] removeObserver:self];
 	}
-	[self postStateChangedNotification];
+	[self postStateChangedNotification:error];
 }
 
 - (void)restClientLoadedAccessToken:(DBRestClient *)client {
@@ -91,19 +91,25 @@ NSString *DBAuthHelperOSXStateChangedNotification = @"DBAuthHelperOSXStateChange
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[restClient autorelease]; // HAX: having this obj maintain it's own rest client maintain it's own client is bad when session unlinks. Need to fix SDK to not cause this
 	restClient = nil;
-	[self postStateChangedNotification];
+	[self postStateChangedNotification:nil];
 }
 
 - (void)restClient:(DBRestClient *)restClient loadAccessTokenFailedWithError:(NSError *)error {
     loading = NO;
-	[self postStateChangedNotification];
+	[self postStateChangedNotification:error];
 }
 
 
 #pragma mark private methods
 
-- (void)postStateChangedNotification {
-	[[NSNotificationCenter defaultCenter] postNotificationName:DBAuthHelperOSXStateChangedNotification object:self];
+- (void)postStateChangedNotification:(NSError *)error {
+	NSDictionary *userInfo = nil;
+	if (error) {
+		userInfo = [NSDictionary dictionaryWithObject:error forKey:@"error"];
+	}
+
+	[[NSNotificationCenter defaultCenter]
+	 postNotificationName:DBAuthHelperOSXStateChangedNotification object:self userInfo:userInfo];
 }
 
 - (DBRestClient *)restClient {
@@ -116,7 +122,7 @@ NSString *DBAuthHelperOSXStateChangedNotification = @"DBAuthHelperOSXStateChange
 
 - (void)applicationDidBecomeActive:(NSNotification*)notification {
 	if ([self.restClient requestTokenLoaded] && !loading) {
-		[self postStateChangedNotification];
+		[self postStateChangedNotification:nil];
 
 		[self.restClient loadAccessToken];
 	}
