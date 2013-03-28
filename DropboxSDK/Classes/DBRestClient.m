@@ -942,7 +942,10 @@ params:(NSDictionary *)params
         }
     } else {
         NSString *copyRef = [result objectForKey:@"copy_ref"];
-        if ([delegate respondsToSelector:@selector(restClient:createdCopyRef:)]) {
+		NSString *path = [request.userInfo objectForKey:@"path"];
+		if ([delegate respondsToSelector:@selector(restClient:createdCopyRef:forPath:)]) {
+			[delegate restClient:self createdCopyRef:copyRef forPath:path];
+		} else if ([delegate respondsToSelector:@selector(restClient:createdCopyRef:)]) {
             [delegate restClient:self createdCopyRef:copyRef];
         }
     }

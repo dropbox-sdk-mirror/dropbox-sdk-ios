@@ -14,7 +14,11 @@
 #import "DBLog.h"
 
 
-static NSString *kDBProtocolDropbox = @"dbapi-1";
+static NSString *kDBProtocolDropbox = @"dbapi-2";
+
+/* A key to keep track of the nonce for the current link flow */
+static NSString *kDBLinkNonce = @"dropbox.sync.nonce";
+
 
 @implementation DBSession (iOS)
 
@@ -75,16 +79,25 @@ static NSString *kDBProtocolDropbox = @"dbapi-1";
     NSUInteger sha_32 = htonl(((NSUInteger *)md)[CC_SHA1_DIGEST_LENGTH/sizeof(NSUInteger) - 1]);
     NSString *secret = [NSString stringWithFormat:@"%x", sha_32];
 
+    CFUUIDRef uuid = CFUUIDCreate(NULL);
+    CFStringRef uuid_str = CFUUIDCreateString(NULL, uuid);
+    CFRelease(uuid);
+    NSString *nonce = [(NSString *)uuid_str autorelease];
+    [[NSUserDefaults standardUserDefaults] setObject:nonce forKey:kDBLinkNonce];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     NSString *urlStr = nil;
 
     NSURL *dbURL =
     [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/connect", kDBProtocolDropbox, kDBDropboxAPIVersion]];
     if ([[UIApplication sharedApplication] canOpenURL:dbURL]) {
-        urlStr = [NSString stringWithFormat:@"%@?k=%@&s=%@%@", dbURL, consumerKey, secret, userIdStr];
+        urlStr = [NSString stringWithFormat:@"%@?k=%@&s=%@&state=%@%@",
+				  dbURL, consumerKey, secret, nonce, userIdStr];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlStr]];
     } else {
-        urlStr = [NSString stringWithFormat:@"%@://%@/%@/connect_login?k=%@&s=%@&easl=1%@",
-                  kDBProtocolHTTPS, kDBDropboxWebHost, kDBDropboxAPIVersion, consumerKey, secret, userIdStr];
+        urlStr = [NSString stringWithFormat:@"%@://%@/%@/connect_login?k=%@&s=%@&state=%@&easl=1%@",
+                  kDBProtocolHTTPS, kDBDropboxWebHost, kDBDropboxAPIVersion,
+                  consumerKey, secret, nonce, userIdStr];
         UIViewController *connectController = [[[DBConnectController alloc] initWithUrl:[NSURL URLWithString:urlStr] fromController:rootController] autorelease];
         UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:connectController] autorelease];
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
@@ -114,6 +127,16 @@ static NSString *kDBProtocolDropbox = @"dbapi-1";
         NSString *token = [params objectForKey:@"oauth_token"];
         NSString *secret = [params objectForKey:@"oauth_token_secret"];
         NSString *userId = [params objectForKey:@"uid"];
+
+		NSString *state = [params objectForKey:@"state"];
+		NSString *nonce = [[NSUserDefaults standardUserDefaults] objectForKey:kDBLinkNonce];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kDBLinkNonce];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+		if (![nonce isEqual:state]) {
+			DBLogError(@"unable to verify link request");
+			return NO;
+		}
+
         [self updateAccessToken:token accessTokenSecret:secret forUserId:userId];
     } else if ([methodName isEqual:@"cancel"]) {
         DBLogInfo(@"DropboxSDK: user cancelled Dropbox link");
