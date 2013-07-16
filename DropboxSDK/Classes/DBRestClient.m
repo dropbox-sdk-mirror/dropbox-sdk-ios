@@ -565,6 +565,7 @@ params:(NSDictionary *)params
     request.uploadProgressSelector = @selector(requestUploadProgress:);
     request.userInfo = 
         [NSDictionary dictionaryWithObjectsAndKeys:sourcePath, @"sourcePath", destPath, @"destinationPath", nil];
+	request.sourcePath = sourcePath;
     
     [uploadRequests setObject:request forKey:destPath];
 }
@@ -672,12 +673,25 @@ params:(NSDictionary *)params
 		[[[DBRequest alloc]
 		  initWithURLRequest:urlRequest andInformTarget:self selector:@selector(requestDidUploadChunk:)]
 		 autorelease];
+	request.uploadProgressSelector = @selector(requestChunkedUploadProgress:);
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 							  [NSNumber numberWithLongLong:offset], @"offset",
 							  localPath, @"fromPath",
 							  uploadId, @"upload_id", nil];
 	request.userInfo = userInfo;
+	request.sourcePath = localPath;
 	[requests addObject:request];
+}
+
+- (void)requestChunkedUploadProgress:(DBRequest*)request {
+	NSString *uploadId = [request.userInfo objectForKey:@"upload_id"];
+	unsigned long long offset = [[request.userInfo objectForKey:@"offset"] longLongValue];
+	NSString *fromPath = [request.userInfo objectForKey:@"fromPath"];
+
+    if ([delegate respondsToSelector:@selector(restClient:uploadFileChunkProgress:forFile:offset:fromPath:)]) {
+		[delegate restClient:self uploadFileChunkProgress:request.uploadProgress
+				forFile:uploadId offset:offset fromPath:fromPath];
+    }
 }
 
 - (void)requestDidUploadChunk:(DBRequest *)request {

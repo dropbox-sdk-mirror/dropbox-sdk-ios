@@ -98,7 +98,7 @@ static NSString *kDBLinkNonce = @"dropbox.sync.nonce";
         urlStr = [NSString stringWithFormat:@"%@://%@/%@/connect_login?k=%@&s=%@&state=%@&easl=1%@",
                   kDBProtocolHTTPS, kDBDropboxWebHost, kDBDropboxAPIVersion,
                   consumerKey, secret, nonce, userIdStr];
-        UIViewController *connectController = [[[DBConnectController alloc] initWithUrl:[NSURL URLWithString:urlStr] fromController:rootController] autorelease];
+        UIViewController *connectController = [[[DBConnectController alloc] initWithUrl:[NSURL URLWithString:urlStr] fromController:rootController session:self] autorelease];
         UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:connectController] autorelease];
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             connectController.modalPresentationStyle = UIModalPresentationFormSheet;

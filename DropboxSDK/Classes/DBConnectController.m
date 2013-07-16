@@ -254,7 +254,7 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
         if ([self.navigationController.viewControllers count] > 1) {
             [self.navigationController popViewControllerAnimated:YES];
         } else {
-            [self dismiss];
+            [self cancel];
         }
     }
 

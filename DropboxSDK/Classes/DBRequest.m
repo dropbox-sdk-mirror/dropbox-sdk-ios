@@ -51,6 +51,7 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
     [fileHandle release];
     [fileManager release];
     [userInfo release];
+    [sourcePath release];
     [response release];
     [xDropboxMetadataJSON release];
     [resultFilename release];
@@ -65,6 +66,7 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
 @synthesize downloadProgressSelector;
 @synthesize uploadProgressSelector;
 @synthesize userInfo;
+@synthesize sourcePath;
 @synthesize request;
 @synthesize response;
 @synthesize xDropboxMetadataJSON;
@@ -286,6 +288,15 @@ id<DBNetworkRequestDelegate> dbNetworkRequestDelegate = nil;
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)response {
 	return nil;
 }
+
+- (NSInputStream *)connection:(NSURLConnection *)connection needNewBodyStream:(NSURLRequest *)req {
+    if (!sourcePath) {
+		DBLogWarning(@"DropboxSDK: need new body stream, but none available");
+		return nil;
+	}
+	return [NSInputStream inputStreamWithFileAtPath:sourcePath];
+}
+
 
 
 #pragma mark private methods
