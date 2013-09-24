@@ -76,6 +76,12 @@ extern id<DBNetworkRequestDelegate> dbNetworkRequestDelegate;
             [[[UIBarButtonItem alloc]
               initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)]
              autorelease];
+
+#ifdef __IPHONE_7_0 // Temporary until we can switch to XCode 5 for release.
+        if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+            self.edgesForExtendedLayout = UIRectEdgeNone;
+        }
+#endif
     }
     return self;
 }
