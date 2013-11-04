@@ -13,7 +13,7 @@
 #import "MPOAuthCredentialConcreteStore.h"
 #import "MPOAuthSignatureParameter.h"
 
-NSString *kDBSDKVersion = @"1.3.7"; // TODO: parameterize from build system
+NSString *kDBSDKVersion = @"1.3.8"; // TODO: parameterize from build system
 
 NSString *kDBDropboxAPIHost = @"api.dropbox.com";
 NSString *kDBDropboxAPIContentHost = @"api-content.dropbox.com";
@@ -33,7 +33,7 @@ static NSString *kDBDropboxSavedCredentialsOld = @"kDBDropboxSavedCredentials";
 static NSString *kDBDropboxUserCredentials = @"kDBDropboxUserCredentials";
 static NSString *kDBDropboxUserId = @"kDBDropboxUserId";
 static NSString *kDBCredentialsVersionKey = @"DBCredentialVersion";
-static int kDBCredentialsVersion = 2;
+static int kDBCredentialsVersion = 3;
 
 
 
@@ -109,13 +109,19 @@ static int kDBCredentialsVersion = 2;
                     NSString *secret = [savedCredentials objectForKey:kMPOAuthCredentialAccessTokenSecret];
                     [self updateAccessToken:token accessTokenSecret:secret forUserId:kDBDropboxUnknownUserId];
                 } else {
-                    // These credentials are version 2 in the keychain
+                    // These credentials are version 2 or 3 in the keychain
                     NSArray *allUserCredentials = [savedCredentials objectForKey:kDBDropboxUserCredentials];
                     for (NSDictionary *userCredentials in allUserCredentials) {
                         NSString *userId = [userCredentials objectForKey:kDBDropboxUserId];
                         NSString *token = [userCredentials objectForKey:kMPOAuthCredentialAccessToken];
                         NSString *secret = [userCredentials objectForKey:kMPOAuthCredentialAccessTokenSecret];
-                        [self setAccessToken:token accessTokenSecret:secret forUserId:userId];
+                        if (version < 3) {
+                            // version 2 of the API used a different keychain access mode and needs
+                            // to be set again with the newer one
+                            [self updateAccessToken:token accessTokenSecret:secret forUserId:userId];
+                        } else {
+                            [self setAccessToken:token accessTokenSecret:secret forUserId:userId];
+                        }
                     }
                 }
             } else {
