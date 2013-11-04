@@ -8,7 +8,6 @@
 
 #import "NSURL+MPURLParameterAdditions.h"
 
-#import "DBDefines.h"
 #import "MPURLRequestParameter.h"
 #import "NSString+URLEscapingAdditions.h"
 
@@ -98,5 +97,3 @@
 }
 
 @end
-
-DB_FIX_CATEGORY_BUG(NSURL_MPURLParameterAdditions)

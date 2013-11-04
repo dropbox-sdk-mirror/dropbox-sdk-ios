@@ -30,8 +30,6 @@
 #import "NSString+DBJSON.h"
 #import "DBJsonParser.h"
 
-#import "DBDefines.h"
-
 
 @implementation NSString (NSString_DBJSON)
 
@@ -56,5 +54,3 @@
 }
 
 @end
-
-DB_FIX_CATEGORY_BUG(NSString_DBJSON)

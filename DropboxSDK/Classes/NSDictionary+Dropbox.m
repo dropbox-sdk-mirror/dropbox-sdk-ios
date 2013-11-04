@@ -8,8 +8,6 @@
 
 #import "NSDictionary+Dropbox.h"
 
-#import "DBDefines.h"
-
 
 @implementation NSDictionary (Dropbox)
 
@@ -48,5 +46,3 @@
 }
 
 @end
-
-DB_FIX_CATEGORY_BUG(NSDictionary_Dropbox)

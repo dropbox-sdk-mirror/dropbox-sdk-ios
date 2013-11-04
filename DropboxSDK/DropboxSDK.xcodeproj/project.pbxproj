@@ -47,7 +47,6 @@
 		D36931FE150884E4003FBA23 /* NSURLResponse+Encoding.m in Sources */ = {isa = PBXBuildFile; fileRef = D387585F14135C3E0013E17C /* NSURLResponse+Encoding.m */; };
 		D36931FF150884E4003FBA23 /* NSDictionary+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D387586014135C3E0013E17C /* NSDictionary+Dropbox.m */; };
 		D3693200150884E4003FBA23 /* NSString+Dropbox.m in Sources */ = {isa = PBXBuildFile; fileRef = D387586114135C3E0013E17C /* NSString+Dropbox.m */; };
-		D369320115088508003FBA23 /* DBDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581314135C3E0013E17C /* DBDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D369320215088508003FBA23 /* DBBase64Transcoder.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581D14135C3E0013E17C /* DBBase64Transcoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D369320315088508003FBA23 /* DBAccountInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581E14135C3E0013E17C /* DBAccountInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D369320415088508003FBA23 /* DBError.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581F14135C3E0013E17C /* DBError.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -89,7 +88,6 @@
 		D376A9D4160303B3003B73DB /* DBConnectController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3ED1B421559F9950023FE9F /* DBConnectController.m */; };
 		D376A9D5160303B3003B73DB /* DBSession+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = D33A120B1527C21700D3BC28 /* DBSession+iOS.m */; };
 		D387586314135C3E0013E17C /* DBAccountInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581214135C3E0013E17C /* DBAccountInfo.m */; };
-		D387586414135C3E0013E17C /* DBDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = D387581314135C3E0013E17C /* DBDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D387586514135C3E0013E17C /* DBError.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581414135C3E0013E17C /* DBError.m */; };
 		D387586714135C3E0013E17C /* DBLog.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581614135C3E0013E17C /* DBLog.m */; };
 		D387586814135C3E0013E17C /* DBMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = D387581714135C3E0013E17C /* DBMetadata.m */; };
@@ -223,8 +221,8 @@
 		D36932261508857E003FBA23 /* DBRestClient+OSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DBRestClient+OSX.h"; sourceTree = "<group>"; };
 		D36932281508857E003FBA23 /* DropboxOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxOSX.h; sourceTree = "<group>"; };
 		D369322E1508867E003FBA23 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		D377DBE117F0E0FD005F3E43 /* 64bit.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = 64bit.xcconfig; sourceTree = "<group>"; };
 		D387581214135C3E0013E17C /* DBAccountInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBAccountInfo.m; path = ../DBAccountInfo.m; sourceTree = "<group>"; };
-		D387581314135C3E0013E17C /* DBDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBDefines.h; path = ../DBDefines.h; sourceTree = "<group>"; };
 		D387581414135C3E0013E17C /* DBError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBError.m; path = ../DBError.m; sourceTree = "<group>"; };
 		D387581614135C3E0013E17C /* DBLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBLog.m; path = ../DBLog.m; sourceTree = "<group>"; };
 		D387581714135C3E0013E17C /* DBMetadata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBMetadata.m; path = ../DBMetadata.m; sourceTree = "<group>"; };
@@ -351,6 +349,7 @@
 		0867D691FE84028FC02AAC07 /* DropboxSDK */ = {
 			isa = PBXGroup;
 			children = (
+				D377DBE117F0E0FD005F3E43 /* 64bit.xcconfig */,
 				D369322E1508867E003FBA23 /* Security.framework */,
 				D387581114135C3E0013E17C /* Classes */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
@@ -404,7 +403,6 @@
 				D387581214135C3E0013E17C /* DBAccountInfo.m */,
 				D3F473D81521774C0041AA64 /* DBAuthHelperOSX.m */,
 				D3ED1B421559F9950023FE9F /* DBConnectController.m */,
-				D387581314135C3E0013E17C /* DBDefines.h */,
 				D3F47306151F8FA10041AA64 /* DBDeltaEntry.m */,
 				D387581414135C3E0013E17C /* DBError.m */,
 				D38B090B15329C2D00BFE072 /* DBKeychain-iOS.m */,
@@ -516,7 +514,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D387586414135C3E0013E17C /* DBDefines.h in Headers */,
 				D387586D14135C3E0013E17C /* DBBase64Transcoder.h in Headers */,
 				D387586E14135C3E0013E17C /* DBAccountInfo.h in Headers */,
 				D387586F14135C3E0013E17C /* DBError.h in Headers */,
@@ -566,7 +563,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D369320115088508003FBA23 /* DBDefines.h in Headers */,
 				D369320215088508003FBA23 /* DBBase64Transcoder.h in Headers */,
 				D369320315088508003FBA23 /* DBAccountInfo.h in Headers */,
 				D369320415088508003FBA23 /* DBError.h in Headers */,
@@ -1022,6 +1018,102 @@
 			};
 			name = Release;
 		};
+		D377DBE417F0E448005F3E43 /* Release64bit */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					armv7,
+					armv6,
+					armv7s,
+				);
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				OTHER_LDFLAGS = "-ObjC";
+				SDKROOT = iphoneos;
+			};
+			name = Release64bit;
+		};
+		D377DBE517F0E448005F3E43 /* Release64bit */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D377DBE117F0E0FD005F3E43 /* 64bit.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Classes/DropboxSDK-Prefix.pch";
+				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				INFOPLIST_FILE = "Classes/DropboxSDK-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = mh_object;
+				MACOSX_DEPLOYMENT_TARGET = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release64bit;
+		};
+		D377DBE617F0E448005F3E43 /* Release64bit */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/SDropboxSDK.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Classes/DropboxSDK-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release64bit;
+		};
+		D377DBE717F0E448005F3E43 /* Release64bit */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				FRAMEWORK_VERSION = A;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Classes/DropboxOSX-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				INFOPLIST_FILE = "Classes/DropboxOSX-Info.plist";
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release64bit;
+		};
 		D3933BED145F12AD00E15FA7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1073,6 +1165,7 @@
 			buildConfigurations = (
 				1DEB922308733DC00010E9CD /* Debug */,
 				1DEB922408733DC00010E9CD /* Release */,
+				D377DBE417F0E448005F3E43 /* Release64bit */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1082,6 +1175,7 @@
 			buildConfigurations = (
 				D3196B8E1412FE190060E7C6 /* Debug */,
 				D3196B8F1412FE190060E7C6 /* Release */,
+				D377DBE517F0E448005F3E43 /* Release64bit */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1091,6 +1185,7 @@
 			buildConfigurations = (
 				D36931DD15088350003FBA23 /* Debug */,
 				D36931DE15088350003FBA23 /* Release */,
+				D377DBE717F0E448005F3E43 /* Release64bit */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1100,6 +1195,7 @@
 			buildConfigurations = (
 				D3933BED145F12AD00E15FA7 /* Debug */,
 				D3933BEE145F12AD00E15FA7 /* Release */,
+				D377DBE617F0E448005F3E43 /* Release64bit */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
