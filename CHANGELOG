@@ -4,6 +4,9 @@ Upgrade instructions
 3. Follow the installation instructions from the README to install the
    newest version of the SDK
 
+Changes from 1.3.8 to 1.3.9
+- You will *not* believe the 64 bit support in this version
+
 Changes from 1.3.7 to 1.3.8
 - Correctly fix the iOS7 background operation bug for users who have already linked Dropbox
 

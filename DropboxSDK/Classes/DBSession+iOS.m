@@ -76,7 +76,7 @@ static NSString *kDBLinkNonce = @"dropbox.sync.nonce";
     [[baseCredentials objectForKey:kMPOAuthCredentialConsumerSecret] dataUsingEncoding:NSUTF8StringEncoding];
     unsigned char md[CC_SHA1_DIGEST_LENGTH];
     CC_SHA1(consumerSecret.bytes, (uint32_t)[consumerSecret length], md);
-    uint32_t sha_32 = htonl(((NSUInteger *)md)[CC_SHA1_DIGEST_LENGTH/sizeof(NSUInteger) - 1]);
+    uint32_t sha_32 = htonl(((uint32_t *)md)[CC_SHA1_DIGEST_LENGTH/sizeof(uint32_t) - 1]);
     NSString *secret = [NSString stringWithFormat:@"%x", sha_32];
 
     CFUUIDRef uuid = CFUUIDCreate(NULL);
